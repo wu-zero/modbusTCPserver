@@ -26,10 +26,6 @@ from modbus_tk.exceptions import(
 
 
 
-
-
-
-
 def main():
     """main"""
 

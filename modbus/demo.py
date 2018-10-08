@@ -1,5 +1,4 @@
-import numpy as np
-import Convert
+from modbus import Convert
 import time
 data_type_all = ('uint16','uint32','float','string')
 # 地址相关
@@ -62,8 +61,6 @@ sensor_value = \
 
 
 
-
-
 def set_values(address_begin, value, data_type):
 
     if data_type in data_type_all:
@@ -84,6 +81,9 @@ def set_values(address_begin, value, data_type):
 
     else:
         print('wrong')
+
+
+
 
 
 if __name__ == '__main__':
