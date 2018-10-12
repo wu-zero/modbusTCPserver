@@ -1,4 +1,4 @@
-from modbus import Convert
+import Convert
 import time
 data_type_all = ('uint16','uint32','float','string')
 # 地址相关
@@ -57,10 +57,6 @@ sensor_value = \
         'reserve': 0}
 
 
-
-
-
-
 def set_values(address_begin, value, data_type):
 
     if data_type in data_type_all:
@@ -75,12 +71,17 @@ def set_values(address_begin, value, data_type):
             value_new = Convert.float_to_uint16(value)
         elif data_type == 'string':
             address_num = 5
-            value_new = Convert.string_to_uint16(value)
+            value_new = Convert.char10_to_uint16(value)
         for i in range(address_num):
             print(address_begin+i,value_new[i])
 
     else:
         print('wrong')
+
+def updata(data):
+    if data[0] == 0:
+        begin_address = modules['sensor1']
+        print('updata'+'sensor1')
 
 
 
@@ -89,3 +90,5 @@ def set_values(address_begin, value, data_type):
 if __name__ == '__main__':
     set_values(1000,'aaa','string')
     print(int(time.time()))
+    data = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    updata(data)

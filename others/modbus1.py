@@ -43,7 +43,7 @@ def main():
         slave_1.add_block('b1', cst.DISCRETE_INPUTS, 0, 100)
         slave_1.add_block('b2', cst.COILS, 0, 100)
         slave_1.add_block('b3', cst.ANALOG_INPUTS, 0, 100)
-        slave_1.add_block('b4', cst.HOLDING_REGISTERS, 0, 100)
+        slave_1.add_block('b4', cst.HOLDING_REGISTERS, 3999, 4170)
 
         while True:
             cmd = sys.stdin.readline()
