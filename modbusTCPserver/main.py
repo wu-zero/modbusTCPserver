@@ -11,11 +11,15 @@ if __name__ == '__main__':
     my_serial = MySerial(serial_address)
     my_modbus = MyModbus()
     my_modbus.set_system_parameter()
-
+    my_modbus.set_sensors()
 
     while True:
-        data = my_serial.get_data_form_port()
-        my_modbus.updata(data)
+        try:
+            data = my_serial.get_data_form_port()
+        except Exception as err:
+            print(err)
+        else:
+            my_modbus.updata(data)
 
 
 
