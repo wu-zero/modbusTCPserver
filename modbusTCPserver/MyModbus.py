@@ -142,5 +142,5 @@ if __name__ == "__main__":
    my_modbus = MyModbus()
    a = [1]
    my_modbus.set_system_parameter()
-   my_modbus._set_sensor()
-   my_modbus.updata(b'\0\0\0aa\0')
+   my_modbus.set_sensors()
+   #my_modbus.updata(b'\0\0\0aa\0')
