@@ -26,7 +26,7 @@ system_parameter = [
     'unit_num',
     'sensor_num',
     'time_stamp']
-system_parameter_config = {
+System_Parameter_Config = {
     'version_num': [0, 'uint16', 1],
     'unit_num':    [1, 'uint16', 0],
     'sensor_num':  [2, 'uint16', 5],
@@ -82,8 +82,8 @@ class MyModbus:
         address_begin = modules_address['system_parameter']
         values = []
         for i in system_parameter:
-            print(system_parameter_config[i])
-            Convert.add_data(values,system_parameter_config[i][1],system_parameter_config[i][2])
+            print(System_Parameter_Config[i])
+            Convert.add_data(values, System_Parameter_Config[i][1], System_Parameter_Config[i][2])
         self.slave.set_values(self._block_name[2],address_begin,values)
 
     def set_sensors(self):
@@ -94,12 +94,35 @@ class MyModbus:
         address_begin = sensors_dict[sensors_id][1]
         sensor_config = deepcopy(Sensor_Config)
         sensor_config['module_num'][2] = sensors_id
+        sensor_config['install_num'][2] = 'YTHA-'+str(sensors_id)
         values = []
         for i in sensor:
             print(sensor_config[i])
             Convert.add_data(values, sensor_config[i][1], sensor_config[i][2])
         self.slave.set_values(self._block_name[2], address_begin, values)
 
+
+    def updata_system_timestamp(self):
+        address_begin = modules_address['system_parameter'] + System_Parameter_Config['time_stamp'][0]
+        values = []
+        Convert.add_data(values, System_Parameter_Config['time_stamp'][1], int(time.time()))
+        self.slave.set_values(self._block_name[2],address_begin,values)
+
+
+
+    def updata2(self,data):
+        data_convert = []
+        Convert.add_data(data_convert, 'bytes', data)
+        print(data_convert)
+        sensor_id = data_convert[0]
+        values = data_convert[1:-2]
+        Convert.add_data(values, Sensor_Config['time_stamp'][1], int(time.time()))
+
+        if sensor_id in sensors_dict:
+            address_begin = sensors_dict[sensor_id][1] + Sensor_Config['temperature'][0]
+            print(data)
+            print(values)
+            self.slave.set_values(self._block_name[2], address_begin, values)
 
     def updata(self,data):
         data_convert = []
@@ -144,3 +167,5 @@ if __name__ == "__main__":
    my_modbus.set_system_parameter()
    my_modbus.set_sensors()
    #my_modbus.updata(b'\0\0\0aa\0')
+   while True:
+       pass

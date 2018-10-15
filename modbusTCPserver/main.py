@@ -14,12 +14,13 @@ if __name__ == '__main__':
     my_modbus.set_sensors()
 
     while True:
+        my_modbus.updata_system_timestamp()
         try:
             data = my_serial.get_data_form_port()
         except Exception as err:
             print(err)
         else:
-            my_modbus.updata(data)
+            my_modbus.updata2(data)
 
 
 
