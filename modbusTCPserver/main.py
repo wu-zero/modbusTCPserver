@@ -4,7 +4,7 @@ import Convert
 
 
 if __name__ == '__main__':
-    serial_address = '/dev/ttyUSB0'
+    serial_address = '/dev/ttyUSB1'
 
 
 

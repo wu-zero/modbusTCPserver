@@ -18,14 +18,6 @@ class MySerial:
 
     def get_data_form_port(self):
         data_result = b''
-
-        # result =[]
-        # for i in range(10):
-        #     a = byte2_to_uint16(data[i * 2:i * 2 + 2])
-        #
-        #     result.append(a)
-        # print(result)
-
         while True:
             data = self._ser.readline()
             data_result = data_result + data
@@ -63,45 +55,10 @@ class MySerial:
 
 
 if __name__ == '__main__':
-    serial_address = '/dev/ttyUSB0'
+    serial_address = '/dev/ttyUSB1'
     my_serial = MySerial(serial_address)
     for i in range(10):
         data = my_serial.get_data_form_port()
         print(data)
         print(len(data))
 
-
-
-    # types_list=[b'12345678\r\n',
-    #             b'1234567890',
-    #             b'ahskdhfkaf',
-    #             b'\r\n',
-    #             b'jalsdjf\r\n'
-    #
-    # ]
-    #
-    #
-    # def fun(types_list):
-    #     a = -1
-    #     data_result = b''
-    #     while True:
-    #         a = a +1
-    #         data = types_list[a]
-    #         data_result = data_result + data
-    #         print(data_result)
-    #         print(data[-2:])
-    #         print(data_result[-2:])
-    #         if data_result[-2:] == Bytes_End:
-    #             if len(data_result) == Bytes_Num:
-    #                 return data_result
-    #             elif len(data_result) > Bytes_Num:
-    #                 raise MySerialException('接收数据错误')
-    #             else:
-    #                 pass
-    #         else:
-    #             if len(data_result) >= Bytes_Num:
-    #                 raise MySerialException('接收数据错误')
-    #             else:
-    #                 pass
-    #
-    # print(fun(types_list))
