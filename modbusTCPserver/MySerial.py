@@ -1,20 +1,23 @@
 import serial
 from Convert import byte2_to_uint16
 import sys
+import Setting
+from MyLog import logger
 
 
 Bytes_Num = 32
 Bytes_End = b'\r\n'
+
 
 class MySerialException(Exception):
     def __init__(self, err=' 串口错误'):
         Exception.__init__(self, err)
 
 
-
 class MySerial:
-    def __init__(self, port_address):
-        self._ser = self._open_serial(port_address)
+    def __init__(self):
+        port_address = Setting.get_serial_address()
+        self._ser = self._init_serial(port_address)
 
     def get_data_form_port(self):
         data_result = b''
@@ -26,19 +29,17 @@ class MySerial:
                 if len(data_result) == Bytes_Num:
                     return data_result[:-2]
                 elif len(data_result) > Bytes_Num:
-                    raise MySerialException('接收数据错误')
+                    logger.error('接收数据错误')
                 else:
                     pass
             else:
                 if len(data_result) >= Bytes_Num:
-                    raise MySerialException('接收数据错误')
+                    logger.error('接收数据错误')
                 else:
                     pass
 
-
-
     @staticmethod
-    def _open_serial(address):
+    def _init_serial(address):
         ser = serial.Serial()
         ser.baudrate = 115200
         ser.port = address
@@ -55,8 +56,7 @@ class MySerial:
 
 
 if __name__ == '__main__':
-    serial_address = '/dev/ttyUSB1'
-    my_serial = MySerial(serial_address)
+    my_serial = MySerial()
     for i in range(10):
         data = my_serial.get_data_form_port()
         print(data)

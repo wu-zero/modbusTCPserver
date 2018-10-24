@@ -40,19 +40,21 @@ def char10_to_uint16(string_number):
     # print("result",result)
     return result
 
+
 # 2字节转换为一个16位
 def byte2_to_uint16(number_bytes):
     result, = struct.unpack('H', number_bytes[0:2])
     return result
 
+
 def byte4_to_uint32(number_bytes):
     result, = struct.unpack('I', number_bytes[0:4])
     return result
 
+
 def byte4_to_float(number_bytes):
     result, = struct.unpack('f', number_bytes[0:4])
     return result
-
 
 
 # n字节转换为n/2个16位
@@ -107,6 +109,7 @@ def add_real_data(result=None, data_type=None, data=None):
             pass
         else:
             pass
+
 
 if __name__ == '__main__':
 

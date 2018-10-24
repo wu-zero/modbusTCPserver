@@ -1,17 +1,12 @@
 from MySerial import MySerial
 from MyModbus import MyModbus
-import Convert
-
+from MyLog import logger
+import Setting
 
 if __name__ == '__main__':
-    serial_address = '/dev/ttyUSB1'
-
-
-
-    my_serial = MySerial(serial_address)
+    my_serial = MySerial()
     my_modbus = MyModbus()
-    my_modbus.set_system_parameter()
-    my_modbus.set_sensors()
+
 
     while True:
         my_modbus.updata_system_timestamp()
@@ -20,6 +15,7 @@ if __name__ == '__main__':
         except Exception as err:
             print(err)
         else:
+            logger.info(Setting.get_real_data(data))
             my_modbus.updata2(data)
 
 

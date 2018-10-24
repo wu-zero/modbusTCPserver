@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="97b9f7bd-77a0-4df8-b188-e318a049fbdf" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/modbus$dd.coverage" NAME="dd Coverage Results" MODIFIED="1540383687525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modbusTCPserver" />
+    <SUITE FILE_PATH="coverage/modbus$demo.coverage" NAME="demo Coverage Results" MODIFIED="1540308759761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/others" />
+    <SUITE FILE_PATH="coverage/modbus$Zigbee_test.coverage" NAME="Zigbee_test Coverage Results" MODIFIED="1540388458170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modbusTCPserver" />
+    <SUITE FILE_PATH="coverage/modbus$MySerial.coverage" NAME="MySerial Coverage Results" MODIFIED="1540308885932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modbusTCPserver" />
+    <SUITE FILE_PATH="coverage/modbus$demo1.coverage" NAME="demo1 Coverage Results" MODIFIED="1540385373130" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modbusTCPserver" />
+    <SUITE FILE_PATH="coverage/modbus$Setting.coverage" NAME="Setting Coverage Results" MODIFIED="1540393250773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modbusTCPserver" />
+    <SUITE FILE_PATH="coverage/modbus$MyModbus.coverage" NAME="MyModbus Coverage Results" MODIFIED="1540379495132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modbusTCPserver" />
+    <SUITE FILE_PATH="coverage/modbus$demo2.coverage" NAME="demo2 Coverage Results" MODIFIED="1540390699274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modbusTCPserver" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Convert.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modbusTCPserver/Convert.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="124">
+              <caret line="50" selection-start-line="50" selection-end-line="50" />
+              <folding>
+                <element signature="e#60#162#0" />
+                <element signature="e#214#524#0" />
+                <element signature="e#578#891#0" />
+                <element signature="e#952#1285#0" />
+                <element signature="e#1940#2738#0" />
+                <element signature="e#2804#3280#0" />
+                <element signature="e#3315#4229#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Anaconda3/envs/modbus/Lib/logging/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="387" selection-start-line="387" selection-end-line="387" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Setting.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/modbusTCPserver/Setting.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="348">
+              <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#285#357#0" />
+                <element signature="e#384#585#0" />
+                <element signature="e#602#752#0" />
+                <element signature="e#809#1174#0" />
+                <element signature="e#1238#1259#0" />
+                <element signature="e#1314#1576#0" />
+                <element signature="e#1629#2135#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MySerial.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modbusTCPserver/MySerial.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="26" column="37" lean-forward="true" selection-start-line="26" selection-start-column="37" selection-end-line="26" selection-end-column="37" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#1095#1410#0" />
+                <element signature="e#1444#1581#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modbusTCPserver/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="242">
+              <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyModbus.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modbusTCPserver/MyModbus.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="109">
+              <caret line="47" column="26" selection-start-line="47" selection-start-column="26" selection-end-line="47" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+                <element signature="e#236#573#0" />
+                <element signature="e#635#749#0" />
+                <element signature="e#787#1145#0" />
+                <element signature="e#1182#1470#0" />
+                <element signature="e#1539#1979#0" />
+                <element signature="e#2042#2202#0" />
+                <element signature="e#2257#2482#0" />
+                <element signature="e#2563#2661#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyLog.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modbusTCPserver/MyLog.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="328">
+              <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>_block_</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/d.py" />
+        <option value="$PROJECT_DIR$/../cs231n_learn/assignment/assignment1/cs231n/classifiers/k_nearest_neighbor.py" />
+        <option value="$PROJECT_DIR$/others/demo.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/Convert.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/dd.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/Zigbee_test.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/demo1.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/data.log.2018-10-24_20-56-07.log" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/error.log" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/data2.log" />
+        <option value="$PROJECT_DIR$/log/data_log/data.log" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/demo2.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/MyModbus.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/main.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/MySerial.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/MyLog.py" />
+        <option value="$PROJECT_DIR$/modbusTCPserver/Setting.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="52" />
+    <option name="y" value="-30" />
+    <option name="width" value="978" />
+    <option name="height" value="1039" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="modbus" type="b2602c69:ProjectViewProjectNode" />
+              <item name="modbus" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="modbus" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Remove_Fence" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.Setting">
+    <configuration name="Setting" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="modbus" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/modbusTCPserver" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/modbusTCPserver/Setting.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="Zigbee_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="modbus" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/modbusTCPserver" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\wu\Documents\GitHub\modbus\modbusTCPserver\MyLog.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="dd" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="modbus" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/modbusTCPserver" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/modbusTCPserver/dd.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="demo1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="modbus" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/modbusTCPserver" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/modbusTCPserver/demo1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="demo2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="modbus" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/modbusTCPserver" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/modbusTCPserver/demo2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.Zigbee_test" />
+      <item itemvalue="Python.dd" />
+      <item itemvalue="Python.demo1" />
+      <item itemvalue="Python.demo2" />
+      <item itemvalue="Python.Setting" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Setting" />
+        <item itemvalue="Python.demo2" />
+        <item itemvalue="Python.Zigbee_test" />
+        <item itemvalue="Python.demo1" />
+        <item itemvalue="Python.dd" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="97b9f7bd-77a0-4df8-b188-e318a049fbdf" name="Default" comment="" />
+      <created>1540036862715</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1540036862715</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="7" sideWeight="0.48632812" side_tool="true" visible="true" weight="0.45165744" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5136719" weight="0.45165744" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22070312" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49544272" weight="0.32596686" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39917126" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="5" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/demo1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/data.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26928">
+          <caret line="1224" column="58" selection-start-line="1224" selection-start-column="58" selection-end-line="1224" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/Convert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
+          <folding>
+            <element signature="e#60#162#0" />
+            <element signature="e#214#524#0" />
+            <element signature="e#578#891#0" />
+            <element signature="e#952#1285#0" />
+            <element signature="e#1940#2738#0" />
+            <element signature="e#2804#3280#0" />
+            <element signature="e#3315#4229#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/envs/modbus/Lib/logging/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23254">
+          <caret line="1059" selection-start-line="1059" selection-end-line="1059" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/Setting.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1100">
+          <caret line="52" selection-start-line="52" selection-end-line="52" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#285#357#0" />
+            <element signature="e#384#585#0" />
+            <element signature="e#602#752#0" />
+            <element signature="e#809#1174#0" />
+            <element signature="e#1238#1259#0" />
+            <element signature="e#1314#1576#0" />
+            <element signature="e#1629#2135#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/MyModbus.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#236#573#0" />
+            <element signature="e#635#749#0" />
+            <element signature="e#787#1145#0" />
+            <element signature="e#1182#1470#0" />
+            <element signature="e#1539#1979#0" />
+            <element signature="e#2042#2202#0" />
+            <element signature="e#2257#2482#0" />
+            <element signature="e#2563#2661#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/MyLog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="5" column="15" lean-forward="true" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/demo2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1078">
+          <caret line="51" column="12" lean-forward="true" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/d.py" />
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../cs231n_learn/assignment/assignment1/cs231n/classifiers/k_nearest_neighbor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1202">
+          <caret line="135" column="18" selection-start-line="135" selection-start-column="18" selection-end-line="135" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/others/modbus1.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/others/demo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/others/modbus_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-462" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/1540383372.log" />
+    <entry file="file://$PROJECT_DIR$/log/1540383427.log" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/all.log" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/myapp.log.4" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/myapp.log.5" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/myapp.log.1" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/myapp.log.2" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/myapp.log.3" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/myapp.log" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/data.log.2018-10-24_20-56-07.log" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/error.log" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/data2.log" />
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/data.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26928">
+          <caret line="1224" column="58" selection-start-line="1224" selection-start-column="58" selection-end-line="1224" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/demo1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/envs/modbus/Lib/logging/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="387" selection-start-line="387" selection-end-line="387" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log/data_log/data.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-220" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log/error_log/error.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log/data_log/data.log.2018-10-24_22-18">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/demo2.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/dd.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/Convert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="50" selection-start-line="50" selection-end-line="50" />
+          <folding>
+            <element signature="e#60#162#0" />
+            <element signature="e#214#524#0" />
+            <element signature="e#578#891#0" />
+            <element signature="e#952#1285#0" />
+            <element signature="e#1940#2738#0" />
+            <element signature="e#2804#3280#0" />
+            <element signature="e#3315#4229#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/MyModbus.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="47" column="26" selection-start-line="47" selection-start-column="26" selection-end-line="47" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#236#573#0" />
+            <element signature="e#635#749#0" />
+            <element signature="e#787#1145#0" />
+            <element signature="e#1182#1470#0" />
+            <element signature="e#1539#1979#0" />
+            <element signature="e#2042#2202#0" />
+            <element signature="e#2257#2482#0" />
+            <element signature="e#2563#2661#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/MySerial.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="26" column="37" lean-forward="true" selection-start-line="26" selection-start-column="37" selection-end-line="26" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#1095#1410#0" />
+            <element signature="e#1444#1581#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/MyLog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modbusTCPserver/Setting.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#285#357#0" />
+            <element signature="e#384#585#0" />
+            <element signature="e#602#752#0" />
+            <element signature="e#809#1174#0" />
+            <element signature="e#1238#1259#0" />
+            <element signature="e#1314#1576#0" />
+            <element signature="e#1629#2135#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
