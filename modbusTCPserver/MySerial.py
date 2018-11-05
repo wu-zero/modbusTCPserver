@@ -1,12 +1,34 @@
-import serial
-from Convert import byte2_to_uint16
 import sys
+import logging.handlers
+import serial
+
 import Setting
-from MyLog import logger
+from CyclicRedundancyCheck import crc16
 
 
 Bytes_Num = 32
 Bytes_End = b'\r\n'
+
+
+
+MY_SERIAL_LOG_FILENAME = '../log/bottom_log/' + 'my_serial.log'
+
+# logger的初始化工作
+logger = logging.getLogger('my_serial')
+logger.setLevel(logging.DEBUG)
+
+# console_log
+# 添加TimedRotatingFileHandler
+# 定义一个1H换一次log文件的handler
+# 保留20个旧log文件
+file_handler = logging.handlers.TimedRotatingFileHandler(MY_SERIAL_LOG_FILENAME, when='H', interval=1, backupCount=2)
+file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
+file_handler.setLevel(logging.INFO)   # ===============
+logger.addHandler(file_handler)
+
+
+
+
 
 
 class MySerialException(Exception):
@@ -21,29 +43,90 @@ class MySerial:
 
     def get_data_form_port(self):
         data_result = b''
-        while True:
-            data = self._ser.readline()
-            data_result = data_result + data
-            # print(len(data_result))
-            if data_result[-2:] == Bytes_End:
-                if len(data_result) == Bytes_Num:
-                    return data_result[:-2]
-                elif len(data_result) > Bytes_Num:
-                    logger.error('接收数据错误')
+        try:
+            data = self._ser.read(1)
+        except:
+            pass  # 没收到(正常)
+        else:
+            # 命令
+            if data == b'':  # 没接到(正常)
+                return None
+            elif data == b'$':  # 命令
+                try:
+                    command = b''
+                    while True:
+                        data = self._ser.read(1)
+                        if data == b'$':
+                            break
+                        else:
+                            command = command + data
+                except Exception:  # 命令字节接收错误
+                    logger.error('command error '+str(command))
+                    return None
                 else:
-                    pass
+                    #  判断命令类型
+                    if command == b'reqtime':
+                        return ['reqtime']
+                    else:  # 无效的命令类型
+                        return None
+            elif ord(data) == 0xaa:  # 数据
+                try:
+                    data_result = data + self._ser.read(32) # 33位
+                    if crc16(data_result[:-2],bytes_num=31) == data_result[-2:]:
+                        #print('getdata')
+                        return ['data',data_result[1:-2]]
+                    else:
+                        return None  # crc校验失败
+                except Exception:
+                    logger.error('data error ' + str(data_result))
+                    return None  # 数据字节接收错误
             else:
-                if len(data_result) >= Bytes_Num:
-                    logger.error('接收数据错误')
-                else:
-                    pass
+                try:
+                    data_result = data + self._ser.read_all()
+                    logger.info('未知数据error '+str(data_result))
+                    return None
+                except:
+                    logger.info('位置数据error '+str(data))
+                    return None
+
+    def write_time(self):
+        time_bytes = Setting.get_time_bytes()
+        logger.info('$settime$ '+ str(time_bytes))
+        self._ser.write(b'$settime$'+time_bytes)
+
+        # data = self._ser.readline()
+        # data_result = data_result + data
+        # print(data_result.decode())
+        # if data_result[0:len(b'$data$')] == b'$data$':
+        #     command_type = 'data'
+        #     bytes_num = 38 # 6+2+7*4+2
+        # elif data_result[0:len(b'$reqtime$')] == b'$reqtime$':
+        #     command_type = 'reqtime'
+        #     bytes_num = 11  # 9+2
+        # elif data_result[0:len(b'$connect$')] == b'$connect$':
+        #     command_type = 'connect'
+        #     bytes_num = 12  # 9+1+2
+        # elif data_result[0:len(b'$discnct$')] == b'$discnct$':
+        #     command_type = 'discnct'
+        #     bytes_num = 12  # 9+1+2
+        # elif data_result[0:len(b'$devicelist$')] == b'$devicelist$':
+        #     command_type = 'devicelist'
+        #     num = ord(data_result[len(b'$devicelist$'):len(b'$devicelist$')+1])
+        #     bytes_num = 15+num   #12 + 1 + num + 2
+        # else:
+        #     command_type = 'data'
+        #     bytes_num = 38  # 6+2+7*4+2
+        #
+        # data_result = self.get_right_data(data_result,bytes_num)
+        #
+        # return data_result
 
     @staticmethod
     def _init_serial(address):
         ser = serial.Serial()
         ser.baudrate = 115200
         ser.port = address
-        ser.timeout = 1
+        ser.timeout = 0.004 #0.05
         try:
             ser.open()
         except Exception as err:

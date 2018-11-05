@@ -1,10 +1,9 @@
 import sys
-import modbus_tk
 import modbus_tk.defines as cst
 from modbus_tk import modbus_tcp
 
 
-import time
+
 import Convert
 import Setting
 
@@ -20,34 +19,23 @@ class MyModbus:
         # 初始化
         try:
             self.server, self.slave = self.__init_modbus()
+            print("server创建成功")
             self.__init_system_parameter()
             self.__init_sensors()
-            print("server创建成功")
             print("running......")
         except Exception as err:
             print("server创建失败，程序终止")
             print(err)
             sys.exit()
 
-
     # 更新时间戳
     def updata_system_timestamp(self):
-        address_begin,values = Setting.get_timestamp_address_and_values()
+        address_begin, values = Setting.get_timestamp_address_and_values()
         self.__set_values(address_begin, values)
 
-    def updata2(self,data):
+    def updata_sensor_module(self, data_bytes):
         data_convert = []
-        Convert.add_uint16_data(data_convert, 'bytes', data)
-        sensor_id = data_convert[0]
-        values = data_convert[1:-2]
-        Convert.add_uint16_data(values, 'uint32', int(time.time()))
-
-        address_begin = Setting.get_sensor_address(sensor_id)
-        self.__set_values(address_begin, values)
-
-    def updata(self,data):
-        data_convert = []
-        Convert.add_uint16_data(data_convert, 'bytes', data)
+        Convert.convert_to_uint16_data(data_convert, 'bytes', data_bytes)
         sensor_id = data_convert[0]
         values = data_convert[1:]
 
@@ -82,6 +70,7 @@ class MyModbus:
             self.__set_values(address_begin, values)
         print("sensors_parameter初始化成功")
 
+    # =======================modbus底层=================
     # 设置modbus寄存器数据
     def __set_values(self, address_begin, values):
         if address_begin is not None:

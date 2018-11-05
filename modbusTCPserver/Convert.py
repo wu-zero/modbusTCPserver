@@ -1,4 +1,8 @@
 import struct
+import datetime
+
+
+
 
 # float转换为2进制
 def _float_to_bin(number):
@@ -45,12 +49,16 @@ def char10_to_uint16(string_number):
 def byte2_to_uint16(number_bytes):
     result, = struct.unpack('H', number_bytes[0:2])
     return result
-
+    ############方法二    速度慢淘汰
+    # result = int.from_bytes(number_bytes[0:2], byteorder='little')
+    # return result
 
 def byte4_to_uint32(number_bytes):
     result, = struct.unpack('I', number_bytes[0:4])
     return result
-
+    ############方法二    速度慢淘汰
+    # result = int.from_bytes(number_bytes[0:4], byteorder='little')
+    # return result
 
 def byte4_to_float(number_bytes):
     result, = struct.unpack('f', number_bytes[0:4])
@@ -67,7 +75,7 @@ def bytes_to_uint16(number_bytes):
     return result
 
 
-def add_uint16_data(result=None, data_type=None, data=None):
+def convert_to_uint16_data(result=None, data_type=None, data=None):
     if result is None or data_type is None or data is None:
         print('error')
     else:
@@ -93,7 +101,7 @@ def add_uint16_data(result=None, data_type=None, data=None):
             pass
 
 
-def add_real_data(result=None, data_type=None, data=None):
+def convert_to_real_data(result=None, data_type=None, data=None):
     if result is None or data_type is None or data is None:
         print('error')
     else:
@@ -113,35 +121,41 @@ def add_real_data(result=None, data_type=None, data=None):
 
 if __name__ == '__main__':
 
-    print(char10_to_uint16('aaaaa'))
-    float_to_uint16(1.1)
-    uint32_to_uint16(65535)
-    print(byte2_to_uint16(b'ab'))
-    bytes_to_uint16(b'abababab\0\0')
-    print("--------------------")
+    # print(char10_to_uint16('aaaaa'))
+    # float_to_uint16(1.1)
+    # uint32_to_uint16(65535)
+    # print(byte2_to_uint16(b'ab'))
+    # bytes_to_uint16(b'abababab\0\0')
+    # print("--------------------")
+    #
+    # result = [1]
+    # print(result)
+    # convert_to_uint16_data(result, 'uint16', 2)
+    # print(result)
+    # convert_to_uint16_data(result, 'uint32', 65535)
+    # print(result)
+    # convert_to_uint16_data(result, 'uint32', 65536)
+    # print(result)
+    # convert_to_uint16_data(result, 'char*10', 'a')
+    # print(result)
+    # convert_to_uint16_data(result, 'bytes', b'\0\0\0a\0baba\0b\0')
+    # print(result)
+    #
+    # result = []
+    # print(result)
+    # convert_to_real_data(result, 'uint16', b'qq')
+    # print(result)
+    # convert_to_real_data(result, 'uint32', b'qq\0\0')
+    # print(result)
+    # convert_to_real_data(result, 'float', b'qqqqqqqq')
+    # print(result)
+    # convert_to_real_data(result, 'char*10', 'a')
+    # print(result)
+    # convert_to_real_data(result, 'bytes', b'\0\0\0a\0baba\0b\0')
+    # print(result)
+    starttime = datetime.datetime.now()
+    for i in range(10000000):
+        byte2_to_uint16(b'a1')
+    endtime = datetime.datetime.now()
+    print((endtime - starttime).seconds)
 
-    result = [1]
-    print(result)
-    add_uint16_data(result, 'uint16', 2)
-    print(result)
-    add_uint16_data(result, 'uint32', 65535)
-    print(result)
-    add_uint16_data(result, 'uint32', 65536)
-    print(result)
-    add_uint16_data(result, 'char*10', 'a')
-    print(result)
-    add_uint16_data(result, 'bytes', b'\0\0\0a\0baba\0b\0')
-    print(result)
-
-    result = []
-    print(result)
-    add_real_data(result, 'uint16', b'qq')
-    print(result)
-    add_real_data(result, 'uint32', b'qq\0\0')
-    print(result)
-    add_real_data(result, 'float', b'qqqqqqqq')
-    print(result)
-    add_real_data(result, 'char*10', 'a')
-    print(result)
-    add_real_data(result, 'bytes', b'\0\0\0a\0baba\0b\0')
-    print(result)

@@ -6,6 +6,9 @@ import Convert
 Sys_Parameter_Address = 4000 - 1
 Sensor_Module_Id_List = [1, 2, 3, 4, 5]
 Sensor_Module_Address_Dict = {1: 4021 - 1, 2: 4051 - 1, 3: 4081 - 1, 4: 4111 - 1, 5: 4141 - 1}
+Sensor_Module_InstallNum_Dict = {1: 'YTHA-1', 2: 'YTHA-2', 3: 'YTHA-3', 4: 'YTHA-4', 5: 'YTHA-5'}
+
+
 
 # sensors_id  sensors_name sensors_address
 System_Parameter = [
@@ -46,7 +49,7 @@ Sensor_Module_Config = {
 }
 
 # ====================================================ZigBee串口
-SERIAL_ADDRESS = '/dev/ttyS0'
+SERIAL_ADDRESS = '/dev/ttyUSB0' # '/dev/ttyS0'
 
 # ====================================================log
 CONSOLE_LOG_FLAG = False
@@ -56,35 +59,35 @@ def get_serial_address():
     return SERIAL_ADDRESS
 
 
-
+# ==================modbus初始化==============
 def get_system_parameter_address_and_values():
     address_begin = Sys_Parameter_Address
     values = []
     for i in System_Parameter:
-        #print(System_Parameter_Config[i])
-        Convert.add_uint16_data(values, System_Parameter_Config[i][1], System_Parameter_Config[i][2])
+        Convert.convert_to_uint16_data(values, System_Parameter_Config[i][1], System_Parameter_Config[i][2])
     return address_begin, values
 
 
 def get_sensor_address_and_values(module_id):
     if module_id in Sensor_Module_Id_List:
         address_begin = Sensor_Module_Address_Dict[module_id]
+
         sensor_config = deepcopy(Sensor_Module_Config)
         sensor_config['module_id'][2] = module_id
-        sensor_config['install_num'][2] = 'YTHA-' + str(module_id)
+        sensor_config['install_num'][2] = Sensor_Module_InstallNum_Dict[module_id]
         values = []
         for i in Sensor_Module:
-            #print(sensor_config[i])
-            Convert.add_uint16_data(values, sensor_config[i][1], sensor_config[i][2])
+            Convert.convert_to_uint16_data(values, sensor_config[i][1], sensor_config[i][2])
         return address_begin,values
     else:
         pass
 
 
+# ===================modbus更新时间================
 def get_timestamp_address_and_values():
     address_begin = Sys_Parameter_Address + System_Parameter_Config['time_stamp'][0]
     values = []
-    Convert.add_uint16_data(values, System_Parameter_Config['time_stamp'][1], int(time.time()))
+    Convert.convert_to_uint16_data(values, System_Parameter_Config['time_stamp'][1], int(time.time()))
     return address_begin, values
 
 
@@ -101,14 +104,23 @@ def get_real_data(data):
     data_others = data[2:]
     values = []
     # 添加module_num
-    Convert.add_real_data(values, Sensor_Module_Config['module_id'][1], data_module_num)
+    Convert.convert_to_real_data(values, Sensor_Module_Config['module_id'][1], data_module_num)
     # 添加数据
     for sensor_module_part in Sensor_Module[2:]:
         #print(data_others[(Sensor_Module_Config[sensor_module_part][0]-6)*2:])
-        Convert.add_real_data(values,Sensor_Module_Config[sensor_module_part][1],data_others[(Sensor_Module_Config[sensor_module_part][0]-6)*2:])
+        Convert.convert_to_real_data(values, Sensor_Module_Config[sensor_module_part][1], data_others[(Sensor_Module_Config[sensor_module_part][0] - 6) * 2:])
     return values
 
 
+def get_time_bytes():
+    time_data = int(time.time())
+    result = time_data.to_bytes(4, byteorder='little')
+    return result
+
 if __name__ == '__main__':
-    print(get_real_data(b'\0\0cdefglskjdfdsddddewwwwwwwwww\r\n'))
-    pass
+    # print(get_real_data(b'\0\0cdefglskjdfdsddddewwwwwwwwww\r\n'))
+    # pass
+    a = get_time_bytes()
+    print(a)
+    for i in range(len(a)):
+        print(a[i])
