@@ -1,14 +1,11 @@
 import time
 from copy import deepcopy
 import Convert
+import xlrd,xlwt
 
-# ===================================================协议
+
+# ===============系统参数协议=========================
 Sys_Parameter_Address = 4000 - 1
-Sensor_Module_Id_List = [1, 2, 3, 4, 5]
-Sensor_Module_Address_Dict = {1: 4021 - 1, 2: 4051 - 1, 3: 4081 - 1, 4: 4111 - 1, 5: 4141 - 1}
-Sensor_Module_InstallNum_Dict = {1: 'YTHA-1', 2: 'YTHA-2', 3: 'YTHA-3', 4: 'YTHA-4', 5: 'YTHA-5'}
-
-
 # sensors_id  sensors_name sensors_address
 System_Parameter = [
     'version_num',
@@ -22,6 +19,33 @@ System_Parameter_Config = {
     'time_stamp':  [3, 'uint32', int(time.time())],
     'reserve':     [5, 'unknow',0]
 }
+
+
+# ================传感器模块协议=======================
+SENSOR_MODULE_NUM = 5
+Sensor_Module_Id_List = [1, 2, 3, 4, 5]
+Sensor_Module_Address_Dict = {1: 4021 - 1, 2: 4051 - 1, 3: 4081 - 1, 4: 4111 - 1, 5: 4141 - 1}
+Sensor_Module_InstallNum_Dict = {1: 'YTHA-1', 2: 'YTHA-2', 3: 'YTHA-3', 4: 'YTHA-4', 5: 'YTHA-5'}
+try:
+    data = xlrd.open_workbook('../doc/setting.xls')
+    table = data.sheets()[0] # 打开第一张表
+    nrows = 5     # 获取表的行数
+    for i in range(SENSOR_MODULE_NUM+1):   # 循环逐行打印
+        if i == 0: # 跳过第一行
+            continue
+        Sensor_Module_InstallNum_Dict[int(i)] = table.row_values(i)[1]
+except:
+    workbook = xlwt.Workbook()
+    worksheet = workbook.add_sheet('sheet1',cell_overwrite_ok=True)
+    worksheet.write(0, 0, label='Sensor_ModuleId_Id')
+    worksheet.write(0, 1, label='Install_Num')
+    for i in range(SENSOR_MODULE_NUM+1):
+        if i == 0: # 跳过第一行
+            continue
+        worksheet.write(i, 0, label= int(i))
+        worksheet.write(i, 1, label=Sensor_Module_InstallNum_Dict[int(i)])
+    workbook.save('../doc/setting.xls')
+
 Sensor_Module = [
     'module_id',
     'install_num',
@@ -155,3 +179,4 @@ if __name__ == '__main__':
     #     print(a[i])
     a = get_module_id_and_timestamp_from_bytes(b'\x04\x00p\xed\xd3B\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xd2\xdb\xdf[')
     print(a)
+    print(Sensor_Module_InstallNum_Dict)
