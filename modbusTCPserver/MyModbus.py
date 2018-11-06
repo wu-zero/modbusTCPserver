@@ -3,8 +3,6 @@ import modbus_tk.defines as cst
 from modbus_tk import modbus_tcp
 
 
-
-import Convert
 import Setting
 
 
@@ -34,12 +32,7 @@ class MyModbus:
         self.__set_values(address_begin, values)
 
     def updata_sensor_module(self, data_bytes):
-        data_convert = []
-        Convert.convert_to_uint16_data(data_convert, 'bytes', data_bytes)
-        sensor_id = data_convert[0]
-        values = data_convert[1:]
-
-        address_begin = Setting.get_sensor_address(sensor_id)
+        address_begin, values = Setting.get_address_and_values_from_bytes(data_bytes)
         self.__set_values(address_begin, values)
 
     # modbus初始化

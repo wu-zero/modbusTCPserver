@@ -45,6 +45,7 @@ class MySerial:
         data_result = b''
         try:
             data = self._ser.read(1)
+
         except:
             pass  # 没收到(正常)
         else:
@@ -67,6 +68,16 @@ class MySerial:
                     #  判断命令类型
                     if command == b'reqtime':
                         return ['reqtime']
+                    elif command == b'devicelist':
+                        try:
+                            data = self._ser.read(1)
+                            num = ord(data)
+                            result = []
+                            for i in range(num):
+                                result.append(ord(self._ser.read(1)))
+                            return ['devicelist',result]
+                        except Exception:
+                            pass
                     else:  # 无效的命令类型
                         return None
             elif ord(data) == 0xaa:  # 数据
@@ -94,6 +105,9 @@ class MySerial:
         logger.info('$settime$ '+ str(time_bytes))
         self._ser.write(b'$settime$'+time_bytes)
 
+    def writ_command_to_zigbee(self,data_bytes):
+        logger.info(str(data_bytes))
+        self._ser.write(data_bytes)
         # data = self._ser.readline()
         # data_result = data_result + data
         # print(data_result.decode())
@@ -126,7 +140,7 @@ class MySerial:
         ser = serial.Serial()
         ser.baudrate = 115200
         ser.port = address
-        ser.timeout = 0.004 #0.05
+        ser.timeout = 0.05 #0.05
         try:
             ser.open()
         except Exception as err:

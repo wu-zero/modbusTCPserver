@@ -9,7 +9,6 @@ Sensor_Module_Address_Dict = {1: 4021 - 1, 2: 4051 - 1, 3: 4081 - 1, 4: 4111 - 1
 Sensor_Module_InstallNum_Dict = {1: 'YTHA-1', 2: 'YTHA-2', 3: 'YTHA-3', 4: 'YTHA-4', 5: 'YTHA-5'}
 
 
-
 # sensors_id  sensors_name sensors_address
 System_Parameter = [
     'version_num',
@@ -49,7 +48,7 @@ Sensor_Module_Config = {
 }
 
 # ====================================================ZigBee串口
-SERIAL_ADDRESS = '/dev/ttyUSB0' # '/dev/ttyS0'
+SERIAL_ADDRESS = '/dev/ttyS0' # '/dev/ttyS0'
 
 # ====================================================log
 CONSOLE_LOG_FLAG = False
@@ -99,28 +98,60 @@ def get_sensor_address(module_id):
         return None
 
 #  解析zigbee接收到的数据
-def get_real_data(data):
-    data_module_num = data[:2]
-    data_others = data[2:]
+def get_real_data(data_bytes):
+    data_module_id = data_bytes[:2]
+
+    data_others = data_bytes[2:]
     values = []
     # 添加module_num
-    Convert.convert_to_real_data(values, Sensor_Module_Config['module_id'][1], data_module_num)
+    Convert.convert_to_real_data(values, Sensor_Module_Config['module_id'][1], data_module_id)
     # 添加数据
     for sensor_module_part in Sensor_Module[2:]:
-        #print(data_others[(Sensor_Module_Config[sensor_module_part][0]-6)*2:])
         Convert.convert_to_real_data(values, Sensor_Module_Config[sensor_module_part][1], data_others[(Sensor_Module_Config[sensor_module_part][0] - 6) * 2:])
     return values
-
 
 def get_time_bytes():
     time_data = int(time.time())
     result = time_data.to_bytes(4, byteorder='little')
     return result
 
+def get_address_and_values_from_bytes(data_bytes):
+    data_module_num = data_bytes[:2]
+    data_others = data_bytes[2:]
+
+    # 获得地址起始值
+    sensor_module_num = Convert.byte2_to_uint16(data_module_num)
+    address_begin = get_sensor_address(sensor_module_num)
+
+    values = []
+    Convert.convert_to_uint16_data(values, 'bytes', data_others)
+    return address_begin, values
+
+
+def get_module_id_and_timestamp_from_bytes(data_bytes):
+    data_module_num = data_bytes[:2]
+    data_others = data_bytes[2:]
+
+    # 获得传感器模块号
+    sensor_module_id = Convert.byte2_to_uint16(data_module_num)
+    # 获得时间戳数值
+    time_stamp = []
+    Convert.convert_to_real_data(time_stamp, Sensor_Module_Config['time_stamp'][1],
+                                 data_others[(Sensor_Module_Config['time_stamp'][0] - 6) * 2:])
+    time_stamp = time_stamp[0]
+    return sensor_module_id, time_stamp
+
+
+
+
+
+
 if __name__ == '__main__':
     # print(get_real_data(b'\0\0cdefglskjdfdsddddewwwwwwwwww\r\n'))
     # pass
-    a = get_time_bytes()
+    # a = get_time_bytes()
+    # print(a)
+    # for i in range(len(a)):
+    #     print(a[i])
+    a = get_module_id_and_timestamp_from_bytes(b'\x04\x00p\xed\xd3B\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xd2\xdb\xdf[')
     print(a)
-    for i in range(len(a)):
-        print(a[i])

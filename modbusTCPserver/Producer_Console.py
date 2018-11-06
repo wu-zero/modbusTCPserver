@@ -61,6 +61,9 @@ class Producer_Console(Thread):
             if len(data_list) == 1 and data_list[0] == 'reqtime':
                 print('get command: reqtime')
                 return ['reqtime']
+            elif len(data_list) == 1 and data_list[0] == 'devicelist':
+                print('get command: devicelist')
+                return ['devicelist']
             elif len(data_list) == 2 and data_list[0] == 'reset':
                 try:
                     arg = int(data_list[1])
@@ -86,6 +89,19 @@ class Producer_Console(Thread):
                         return ['hbfreq', arg]
                     else:
                         sys.stdout.write('you should input: $hbfreq$ [Uint8](0~255)\n')
+                        return None
+            elif len(data_list) == 2 and data_list[0] == 'reset':
+                try:
+                    arg = int(data_list[1])
+                except Exception as err:
+                    sys.stdout.write('you should input: $reset$ [Uint8]\n')
+                    return None
+                else:
+                    if 0 <= arg <= 2 ** 8 - 1:
+                        print('get command: reset ', arg)
+                        return ['reset', arg]
+                    else:
+                        sys.stdout.write('you should input: $reset$ [Uint8](0~255)\n')
                         return None
             else:
                 print("unknown command")
