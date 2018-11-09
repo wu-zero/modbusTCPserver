@@ -38,6 +38,8 @@ class SensorModuleMonitor:
         for module_id in Setting.Sensor_Module_Id_List:
             self.off_line_bool_dict_old[module_id] = 1
 
+        logger.info('设备重启。。。。。')
+
 
     def updata_timestamp(self,data_bytes):
         module_id, time_stamp = Setting.get_module_id_and_timestamp_from_bytes(data_bytes)
@@ -48,7 +50,7 @@ class SensorModuleMonitor:
         time_now = int(time.time())
         off_line_bool_dict = {}
         for module_id in Setting.Sensor_Module_Id_List:
-            if time_now - self.timestamp_dict[module_id] > 2:
+            if time_now - self.timestamp_dict[module_id] > 3:
                 off_line_bool_dict[module_id] = 1
             else:
                 off_line_bool_dict[module_id] = 0

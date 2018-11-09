@@ -79,7 +79,13 @@ class MySerial:
                         except Exception:
                             pass
                     else:  # 无效的命令类型
-                        return None
+                        try:
+                            data_result = command + self._ser.read_all()
+                            logger.info('未知命令error ' + str(data_result))
+                            return None
+                        except:
+                            logger.info('未知命令error ' + str(command))
+                            return None
             elif ord(data) == 0xaa:  # 数据
                 try:
                     data_result = data + self._ser.read(32) # 33位
@@ -97,13 +103,13 @@ class MySerial:
                     logger.info('未知数据error '+str(data_result))
                     return None
                 except:
-                    logger.info('位置数据error '+str(data))
+                    logger.info('未知数据error '+str(data))
                     return None
 
     def write_time(self):
         time_bytes = Setting.get_time_bytes()
-        logger.info('$settime$ '+ str(time_bytes))
         self._ser.write(b'$settime$'+time_bytes)
+        logger.info('$settime$ ' + str(time_bytes))
 
     def writ_command_to_zigbee(self,data_bytes):
         logger.info(str(data_bytes))

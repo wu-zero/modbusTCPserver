@@ -1,5 +1,6 @@
 from threading import Thread
 import logging.handlers
+import time
 
 PRODUCER_SERIALPORT_LOG_FILENAME = '../log/serial_port_log/' + 'serial_port.log'
 
@@ -34,6 +35,7 @@ class Producer_Serial(Thread):
     start()方法用于启动线程。
     """
     def run(self):
+        print('串口接收线程开始执行', time.time())
         logger.info('serial_port begin')
         while True:
             args = self.serial.get_data_form_port()  # serial 读命令

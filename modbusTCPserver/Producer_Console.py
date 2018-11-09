@@ -3,7 +3,7 @@ import sys
 from queue import Queue
 from prompt_toolkit import prompt
 import logging.handlers
-
+import time
 
 PRODUCER_CONSOLE_LOG_FILENAME = '../log/console_log/' + 'console.log'
 
@@ -38,6 +38,7 @@ class Producer_Console(Thread):
     """
 
     def run(self):
+        print('控制台 线程开始执行', time.time())
         logger.info('Console begin')
         while not self.exit.is_set():
             try:
