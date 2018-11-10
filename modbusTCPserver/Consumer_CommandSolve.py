@@ -48,9 +48,8 @@ class Consumer_CommandSolve(Thread):
 
     def solve_command(self, args, my_modbus, my_serial, monitor):
         if args[0] == 'data':
-            my_modbus.updata_sensor_module(args[1])
-            monitor.updata_timestamp(args[1])
-
+            if monitor.updata_timestamp(args[1]):
+                my_modbus.updata_sensor_module(args[1])
         elif args[0] == 'reqtime':
             my_serial.write_time()
         elif args[0] == 'devicelist' and len(args) == 2:

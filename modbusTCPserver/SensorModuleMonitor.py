@@ -60,8 +60,13 @@ class SensorModuleMonitor:
             if time_difference >= 0:
                 self.timestamp_dict_old = self.timestamp_dict
                 self.timestamp_dict[module_id] = time_stamp
-            if time_difference > 5 and self.off_line_bool_dict_old[module_id] != 1:
-                logger2.info('模块'+str(module_id)+'不合理时间间隔：'+str(time_difference))
+
+                if time_difference > 5 and self.off_line_bool_dict_old[module_id] != 1:
+                    logger2.info('模块'+str(module_id)+'不合理时间间隔：'+str(time_difference))
+
+                return True
+            else:
+                return False
 
     def monitor(self):
         time_now = int(time.time())

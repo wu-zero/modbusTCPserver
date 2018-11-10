@@ -1,0 +1,15 @@
+2018-11-10 16:46:06,041 - INFO - Producer_Console.py[:42] - Console begin
+2018-11-10 16:46:59,855 - INFO - Producer_Console.py[:56] - get command ['reset', 1]
+2018-11-10 16:47:11,152 - INFO - Producer_Console.py[:56] - get command ['devicelist']
+2018-11-10 16:47:37,101 - INFO - Producer_Console.py[:56] - get command ['devicelist']
+2018-11-10 16:47:48,206 - INFO - Producer_Console.py[:56] - get command ['devicelist']
+2018-11-10 16:47:56,812 - INFO - Producer_Console.py[:58] - Console exit
+2018-11-10 16:48:06,504 - INFO - Producer_Console.py[:42] - Console begin
+2018-11-10 16:48:24,088 - INFO - Producer_Console.py[:56] - get command ['devicelist']
+2018-11-10 16:48:42,328 - INFO - Producer_Console.py[:56] - get command ['devicelist']
+2018-11-10 16:52:50,151 - INFO - Producer_Console.py[:58] - Console exit
+2018-11-10 16:55:22,987 - INFO - Producer_Console.py[:42] - Console begin
+2018-11-10 16:55:34,376 - INFO - Producer_Console.py[:56] - get command ['reset', 1]
+2018-11-10 16:55:46,329 - INFO - Producer_Console.py[:56] - get command ['reset', 1]
+2018-11-10 16:56:03,071 - INFO - Producer_Console.py[:58] - Console exit
+2018-11-10 17:18:23,514 - INFO - Producer_Console.py[:42] - Console begin

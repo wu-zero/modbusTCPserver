@@ -1,0 +1,6 @@
+2018-11-10 18:33:07,644 - INFO - Producer_Console.py[:42] - Console begin
+2018-11-10 18:38:33,988 - INFO - Producer_Console.py[:58] - Console exit
+2018-11-10 18:40:03,317 - INFO - Producer_Console.py[:42] - Console begin
+2018-11-10 18:57:03,614 - INFO - Producer_Console.py[:56] - get command ['reset', 2]
+2018-11-10 18:57:23,374 - INFO - Producer_Console.py[:56] - get command ['reset', 2]
+2018-11-10 18:58:02,201 - INFO - Producer_Console.py[:56] - get command ['reset', 1]
