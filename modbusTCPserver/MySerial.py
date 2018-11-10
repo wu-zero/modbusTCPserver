@@ -6,7 +6,7 @@ import Setting
 from CyclicRedundancyCheck import crc16
 
 
-Bytes_Num = 32
+Bytes_Num = 29
 Bytes_End = b'\r\n'
 
 
@@ -50,6 +50,7 @@ class MySerial:
             pass  # 没收到(正常)
         else:
             # 命令
+            logger.info(data)
             if data == b'':  # 没接到(正常)
                 return None
             elif data == b'$':  # 命令
@@ -88,11 +89,12 @@ class MySerial:
                             return None
             elif ord(data) == 0xaa:  # 数据
                 try:
-                    data_result = data + self._ser.read(32) # 33位
-                    if crc16(data_result[:-2],bytes_num=31) == data_result[-2:]:
+                    data_result = data + self._ser.read(Bytes_Num-1)  # 29位
+                    if crc16(data_result[:-2], bytes_num=Bytes_Num-2) == data_result[-2:]:
                         #print('getdata')
                         return ['data',data_result[1:-2]]
                     else:
+                        logger.info('crc校验失败'+str(data_result))
                         return None  # crc校验失败
                 except Exception:
                     logger.error('data error ' + str(data_result))

@@ -9,12 +9,12 @@ Sys_Parameter_Address = 4000 - 1
 # sensors_id  sensors_name sensors_address
 System_Parameter = [
     'version_num',
-    'unit_num',
+    'station_num',
     'sensor_num',
     'time_stamp']
 System_Parameter_Config = {
     'version_num': [0, 'uint16', 1],
-    'unit_num':    [1, 'uint16', 0],
+    'station_num': [1, 'uint16', 0],
     'sensor_num':  [2, 'uint16', 5],
     'time_stamp':  [3, 'uint32', int(time.time())],
     'reserve':     [5, 'unknow',0]
@@ -49,26 +49,24 @@ except:
 Sensor_Module = [
     'module_id',
     'install_num',
+    'time_stamp',
     'temperature',
     'humidity',
-    'o3',
-    'voc',
     'co2',
     'pm2.5',
-    'time_stamp',
+    'pm10',
     'reserve']
 #     name  address+  type   初始值
 Sensor_Module_Config = {
-    'module_id': [0, 'uint16', 1],
-    'install_num': [1, 'char*10', 'YTHA-7'],
-    'temperature': [6, 'float', 0.0],
-    'humidity': [8, 'float', 0.0],
-    'o3': [10, 'float', 0.0],
-    'voc': [12, 'float', 0.0],
-    'co2': [14, 'float', 0.0],
-    'pm2.5': [16, 'float', 0.0],
-    'time_stamp': [18, 'uint32', int(time.time())],
-    'reserve': [20, 'unknow', 0]
+    'module_id':    [0, 'uint16',   1],
+    'install_num':  [1, 'char*10',  'YTHA-7'],
+    'time_stamp':   [6, 'uint32',   int(time.time())],
+    'temperature':  [8, 'float',    0.0],
+    'humidity':     [10, 'float',   0.0],
+    'co2':          [12, 'float',   0.0],
+    'pm2.5':        [14, 'float',   0.0],
+    'pm10':         [16, 'float',   0.0],
+    'reserve':      [18, 'unknow',  0]
 }
 
 # ====================================================ZigBee串口
@@ -116,7 +114,7 @@ def get_timestamp_address_and_values():
 
 def get_sensor_address(module_id):
     if module_id in Sensor_Module_Id_List:
-        address_begin = Sensor_Module_Address_Dict[module_id] + Sensor_Module_Config['temperature'][0]
+        address_begin = Sensor_Module_Address_Dict[module_id] + Sensor_Module_Config['time_stamp'][0]
         return address_begin
     else:
         return None

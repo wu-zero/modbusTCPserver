@@ -1,0 +1,9 @@
+2018-11-10 16:40:59,238 - INFO - SensorModuleMonitor.py[:52] - 设备重启。。。。。
+2018-11-10 16:42:00,102 - INFO - SensorModuleMonitor.py[:52] - 设备重启。。。。。
+2018-11-10 16:42:00,604 - INFO - SensorModuleMonitor.py[:76] - 模块1 on line
+2018-11-10 16:42:00,605 - INFO - SensorModuleMonitor.py[:76] - 模块2 on line
+2018-11-10 16:42:00,605 - INFO - SensorModuleMonitor.py[:76] - 模块3 on line
+2018-11-10 16:42:00,605 - INFO - SensorModuleMonitor.py[:76] - 模块4 on line
+2018-11-10 16:42:00,606 - INFO - SensorModuleMonitor.py[:76] - 模块5 on line
+2018-11-10 16:42:31,324 - INFO - SensorModuleMonitor.py[:78] - 模块4 off line
+2018-11-10 16:42:31,330 - INFO - SensorModuleMonitor.py[:78] - 模块5 off line
