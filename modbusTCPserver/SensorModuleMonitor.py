@@ -22,15 +22,15 @@ logger2.setLevel(logging.DEBUG)
 # 添加TimedRotatingFileHandler
 # 定义一个1H换一次log文件的handler
 # 保留5个旧log文件
-file_handler = logging.handlers.TimedRotatingFileHandler(MONITOR1_LOG_FILENAME, when='D', interval=1, backupCount=5)
-file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
-file_handler.setLevel(logging.INFO)
-logger1.addHandler(file_handler)
+handler = logging.handlers.TimedRotatingFileHandler(MONITOR1_LOG_FILENAME, when='D', interval=1, backupCount=5)
+handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
+handler.setLevel(logging.INFO)
+logger1.addHandler(handler)
 
-file_handler2 = logging.handlers.TimedRotatingFileHandler(MONITOR2_LOG_FILENAME, when='D', interval=1, backupCount=5)
-file_handler2.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
-file_handler2.setLevel(logging.INFO)
-logger2.addHandler(file_handler2)
+handler2 = logging.handlers.TimedRotatingFileHandler(MONITOR2_LOG_FILENAME, when='D', interval=1, backupCount=5)
+handler2.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
+handler2.setLevel(logging.INFO)
+logger2.addHandler(handler2)
 
 
 
@@ -54,6 +54,7 @@ class SensorModuleMonitor:
 
 
     def updata_timestamp(self,data_bytes):
+        return True
         module_id, time_stamp = Setting.get_module_id_and_timestamp_from_bytes(data_bytes)
         if module_id in Setting.Sensor_Module_Id_List:
             time_difference = time_stamp - self.timestamp_dict[module_id]

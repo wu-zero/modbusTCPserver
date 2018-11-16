@@ -1,7 +1,4 @@
 import struct
-import datetime
-
-
 
 
 # float转换为2进制
@@ -46,19 +43,27 @@ def char10_to_uint16(string_number):
 
 
 # 2字节转换为一个16位
-def byte2_to_uint16(number_bytes):
-    result, = struct.unpack('H', number_bytes[0:2])
+def byte2_to_uint16(number_bytes, little_endian=True):
+    if little_endian:
+        result, = struct.unpack('H', number_bytes[0:2])
+    else:
+        result, = struct.unpack('!H', number_bytes[0:2])
     return result
     ############方法二    速度慢淘汰
     # result = int.from_bytes(number_bytes[0:2], byteorder='little')
     # return result
 
-def byte4_to_uint32(number_bytes):
-    result, = struct.unpack('I', number_bytes[0:4])
+
+def byte4_to_uint32(number_bytes, little_endian=True):
+    if little_endian:
+        result, = struct.unpack('I', number_bytes[0:4])
+    else:
+        result, = struct.unpack('!I', number_bytes[0:4])
     return result
     ############方法二    速度慢淘汰
     # result = int.from_bytes(number_bytes[0:4], byteorder='little')
     # return result
+
 
 def byte4_to_float(number_bytes):
     result, = struct.unpack('f', number_bytes[0:4])
@@ -74,7 +79,7 @@ def bytes_to_uint16(number_bytes):
         result.append(byte2_to_uint16(number_bytes[i * 2:i * 2 + 2]))
     return result
 
-
+# real data to modbus data
 def convert_to_uint16_data(result=None, data_type=None, data=None):
     if result is None or data_type is None or data is None:
         print('error')
@@ -100,7 +105,7 @@ def convert_to_uint16_data(result=None, data_type=None, data=None):
         else:
             pass
 
-
+# serial to real data
 def convert_to_real_data(result=None, data_type=None, data=None):
     if result is None or data_type is None or data is None:
         print('error')
@@ -141,11 +146,12 @@ if __name__ == '__main__':
     # convert_to_uint16_data(result, 'bytes', b'\0\0\0a\0baba\0b\0')
     # print(result)
     #
-    # result = []
+    result = []
     # print(result)
     # convert_to_real_data(result, 'uint16', b'qq')
     # print(result)
-    # convert_to_real_data(result, 'uint32', b'qq\0\0')
+    convert_to_real_data(result, 'uint32', b'n\xdf\xe6[')
+    print(result)
     # print(result)
     # convert_to_real_data(result, 'float', b'qqqqqqqq')
     # print(result)
@@ -153,9 +159,10 @@ if __name__ == '__main__':
     # print(result)
     # convert_to_real_data(result, 'bytes', b'\0\0\0a\0baba\0b\0')
     # print(result)
-    starttime = datetime.datetime.now()
-    for i in range(10000000):
-        byte2_to_uint16(b'a1')
-    endtime = datetime.datetime.now()
-    print((endtime - starttime).seconds)
-
+    # starttime = datetime.datetime.now()
+    # for i in range(10000000):
+    #     byte2_to_uint16(b'a1')
+    # endtime = datetime.datetime.now()
+    # print((endtime - starttime).seconds)
+    #print(byte2_to_uint16(b'\x13\x87', little_endian=False))
+    #print(byte4_to_uint32(b'\xb0Z[\xeb'))

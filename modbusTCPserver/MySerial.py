@@ -3,7 +3,7 @@ import logging.handlers
 import serial
 
 import Setting
-from CyclicRedundancyCheck import crc16
+from tool.CyclicRedundancyCheck import crc16
 
 
 Bytes_Num = 29

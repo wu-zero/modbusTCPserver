@@ -12,10 +12,10 @@ logger.setLevel(logging.DEBUG)
 # 添加TimedRotatingFileHandler
 # 定义一个1H换一次log文件的handler
 # 保留20个旧log文件
-file_handler = logging.handlers.TimedRotatingFileHandler(CONSUMER_COMMANDSOLVE_LOG_FILENAME, when='H', interval=1, backupCount=5)
-file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
-file_handler.setLevel(logging.INFO)
-logger.addHandler(file_handler)
+handler = logging.handlers.TimedRotatingFileHandler(CONSUMER_COMMANDSOLVE_LOG_FILENAME, when='H', interval=1, backupCount=5)
+handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
+handler.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 
 class Consumer_CommandSolve(Thread):

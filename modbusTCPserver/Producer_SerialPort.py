@@ -12,10 +12,10 @@ logger.setLevel(logging.DEBUG)
 # 添加TimedRotatingFileHandler
 # 定义一个1H换一次log文件的handler
 # 保留20个旧log文件
-data_file_handler = logging.handlers.TimedRotatingFileHandler(PRODUCER_SERIALPORT_LOG_FILENAME, when='H', interval=1, backupCount=2)
-data_file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
-data_file_handler.setLevel(logging.INFO)
-logger.addHandler(data_file_handler)
+handler = logging.handlers.TimedRotatingFileHandler(PRODUCER_SERIALPORT_LOG_FILENAME, when='H', interval=1, backupCount=2)
+handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
+handler.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 
 class Producer_Serial(Thread):

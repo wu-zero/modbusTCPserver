@@ -24,7 +24,7 @@ if __name__ == '__main__':
     routine = Timer(0.5, routine_fun)
     routine.start()
     routine.join()
-    print('系统维护线程开始执行', time.time())
+    print('系统维护线程开始执行111', time.time())
 
     queue = Queue()  # 队列实例化
 

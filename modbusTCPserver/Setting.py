@@ -1,6 +1,6 @@
 import time
 from copy import deepcopy
-import Convert
+from tool import Convert,SetPiTime
 import xlrd,xlwt
 
 
@@ -19,7 +19,6 @@ System_Parameter_Config = {
     'time_stamp':  [3, 'uint32', int(time.time())],
     'reserve':     [5, 'unknow',0]
 }
-
 
 # ================传感器模块协议=======================
 SENSOR_MODULE_NUM = 5
@@ -60,7 +59,7 @@ Sensor_Module = [
 Sensor_Module_Config = {
     'module_id':    [0, 'uint16',   1],
     'install_num':  [1, 'char*10',  'YTHA-7'],
-    'time_stamp':   [6, 'uint32',   int(time.time())],
+    'time_stamp':   [6, 'uint32',   0],
     'temperature':  [8, 'float',    0.0],
     'humidity':     [10, 'float',   0.0],
     'co2':          [12, 'float',   0.0],
@@ -68,6 +67,11 @@ Sensor_Module_Config = {
     'pm10':         [16, 'float',   0.0],
     'reserve':      [18, 'unknow',  0]
 }
+
+# ==================树莓派系统参数设置协议================
+Pi_Time_stamp_Address = 5000 - 1
+
+
 
 # ====================================================ZigBee串口
 SERIAL_ADDRESS = '/dev/ttyS0' # '/dev/ttyS0'
@@ -111,6 +115,12 @@ def get_timestamp_address_and_values():
     Convert.convert_to_uint16_data(values, System_Parameter_Config['time_stamp'][1], int(time.time()))
     return address_begin, values
 
+def get_Pi_timestamp_address_and_values():
+    address_begin = Pi_Time_stamp_Address
+    values = []
+    Convert.convert_to_uint16_data(values, 'uint32', int(time.time()))
+    return address_begin, values
+
 
 def get_sensor_address(module_id):
     if module_id in Sensor_Module_Id_List:
@@ -120,10 +130,10 @@ def get_sensor_address(module_id):
         return None
 
 #  解析zigbee接收到的数据
-def get_real_data(data_bytes):
-    data_module_id = data_bytes[:2]
+def get_real_data(bytes_data):
+    data_module_id = bytes_data[:2]
 
-    data_others = data_bytes[2:]
+    data_others = bytes_data[2:]
     values = []
     # 添加module_num
     Convert.convert_to_real_data(values, Sensor_Module_Config['module_id'][1], data_module_id)
@@ -132,14 +142,10 @@ def get_real_data(data_bytes):
         Convert.convert_to_real_data(values, Sensor_Module_Config[sensor_module_part][1], data_others[(Sensor_Module_Config[sensor_module_part][0] - 6) * 2:])
     return values
 
-def get_time_bytes():
-    time_data = int(time.time())
-    result = time_data.to_bytes(4, byteorder='little')
-    return result
 
-def get_address_and_values_from_bytes(data_bytes):
-    data_module_num = data_bytes[:2]
-    data_others = data_bytes[2:]
+def get_address_and_values_from_bytes(bytes_data):
+    data_module_num = bytes_data[:2]
+    data_others = bytes_data[2:]
 
     # 获得地址起始值
     sensor_module_num = Convert.byte2_to_uint16(data_module_num)
@@ -150,9 +156,9 @@ def get_address_and_values_from_bytes(data_bytes):
     return address_begin, values
 
 
-def get_module_id_and_timestamp_from_bytes(data_bytes):
-    data_module_num = data_bytes[:2]
-    data_others = data_bytes[2:]
+def get_module_id_and_timestamp_from_bytes(bytes_data):
+    data_module_num = bytes_data[:2]
+    data_others = bytes_data[2:]
 
     # 获得传感器模块号
     sensor_module_id = Convert.byte2_to_uint16(data_module_num)
@@ -163,7 +169,21 @@ def get_module_id_and_timestamp_from_bytes(data_bytes):
     time_stamp = time_stamp[0]
     return sensor_module_id, time_stamp
 
+def get_time_bytes():
+    time_data = int(time.time())
+    result = time_data.to_bytes(4, byteorder='little')
+    return result
 
+
+
+#  解析modbus request命令
+def solve_request(bytes_data):
+    address = Convert.byte2_to_uint16(bytes_data[1:3], little_endian=False)
+    if address == Pi_Time_stamp_Address:
+        value_low = Convert.byte2_to_uint16(bytes_data[6:8], little_endian=False)
+        value_hign = Convert.byte2_to_uint16(bytes_data[8:10], little_endian=False)
+        time_stamp = value_low + value_hign*65536
+        SetPiTime.linux_set_time(time_stamp)
 
 
 
@@ -178,3 +198,4 @@ if __name__ == '__main__':
     a = get_module_id_and_timestamp_from_bytes(b'\x04\x00p\xed\xd3B\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xd2\xdb\xdf[')
     print(a)
     print(Sensor_Module_InstallNum_Dict)
+    print(get_timestamp_address_and_values())
