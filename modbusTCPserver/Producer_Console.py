@@ -14,7 +14,7 @@ logger.setLevel(logging.DEBUG)
 # console_log
 # 添加TimedRotatingFileHandler
 # 定义一个1H换一次log文件的handler
-# 保留20个旧log文件
+# 保留2个旧log文件
 data_file_handler = logging.handlers.TimedRotatingFileHandler(PRODUCER_CONSOLE_LOG_FILENAME, when='H', interval=1, backupCount=2)
 data_file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
 data_file_handler.setLevel(logging.INFO)
@@ -30,35 +30,31 @@ class Producer_Console(Thread):
         self.data = queue
         self.exit = Event()
 
-    """
-    run方法 和start方法:
-    它们都是从Thread继承而来的，run()方法将在线程开启后执行，
-    可以把相关的逻辑写到run方法中（通常把run方法称为活动[Activity]）；
-    start()方法用于启动线程。
-    """
-
     def run(self):
-        print('控制台 线程开始执行', time.time())
-        logger.info('Console begin')
-        while not self.exit.is_set():
-            try:
-                input_data = prompt('>') #sys.stdin.readline()
-            except Exception:
-                print('Console_error')
-                pass
-            else:
-                if input_data == 'quit':
-                    self.stop()
+        try:
+            print('控制台 线程开始执行', time.time())
+            logger.info('Console begin')
+            while not self.exit.is_set():
+                try:
+                    input_data = prompt('>')  # sys.stdin.readline()
+                except Exception:
+                    print('Console_error')
+                    pass
                 else:
-                    args = self.input_data_solve(input_data)
-                    if args != None:
-                        self.data.put(args)  # 写入队列编号
-                        logger.info('get command ' + str(args))
-        print('Console exit')
-        logger.info('Console exit')
+                    if input_data == 'quit':
+                        self.stop()
+                    else:
+                        args = self.input_data_solve(input_data)
+                        if args is not None:
+                            self.data.put(args)  # 写入队列编号
+                            logger.info('get command ' + str(args))
+            print('Console exit')
+            logger.info('Console exit')
+        except Exception:
+            pass
 
     def input_data_solve(self, data):
-            data_list = list(filter(None,data.split('$')))
+            data_list = list(filter(None, data.split('$')))
             if len(data_list) == 1 and data_list[0] == 'reqtime':
                 print('get command: reqtime')
                 return ['reqtime']
@@ -110,6 +106,7 @@ class Producer_Console(Thread):
 
     def stop(self):
         self.exit.set()
+
 
 if __name__ == '__main__':
     queue = Queue()  # 队列实例化

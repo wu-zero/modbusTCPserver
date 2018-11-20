@@ -10,7 +10,7 @@ def _float_to_bin(number):
 # float转换为两个16位
 def float_to_uint16(number):
     number_bytes = struct.pack('f', number)
-    bits_low, = struct.unpack('H',number_bytes[0:2])
+    bits_low, = struct.unpack('H', number_bytes[0:2])
     bits_high, = struct.unpack('H', number_bytes[2:4])
     # print("float":float_to_bin(num))
     # print("低16位：{:016b}".format(bits_low))
@@ -21,7 +21,7 @@ def float_to_uint16(number):
 # uint32转换为两个16位
 def uint32_to_uint16(number):
     number_bytes = struct.pack('I', number)
-    bits_low, = struct.unpack('H',number_bytes[0:2])
+    bits_low, = struct.unpack('H', number_bytes[0:2])
     bits_high, = struct.unpack('H', number_bytes[2:4])
     # print("uint32:{:032b}".format(num))
     # print("低16位：{:016b}".format(bits_low))
@@ -36,7 +36,7 @@ def char10_to_uint16(string_number):
     for i in range(min(10, len(string_number))):
         number_bytes[i] = ord(string_number[i])
     for i in range(5):
-        result[i] = number_bytes[i*2] * 256 + number_bytes[i*2+1]
+        result[i] = number_bytes[i * 2] * 256 + number_bytes[i * 2 + 1]
     # print("types:",types)
     # print("result",result)
     return result
@@ -49,7 +49,7 @@ def byte2_to_uint16(number_bytes, little_endian=True):
     else:
         result, = struct.unpack('!H', number_bytes[0:2])
     return result
-    ############方法二    速度慢淘汰
+    # 方法二    速度慢淘汰
     # result = int.from_bytes(number_bytes[0:2], byteorder='little')
     # return result
 
@@ -60,7 +60,7 @@ def byte4_to_uint32(number_bytes, little_endian=True):
     else:
         result, = struct.unpack('!I', number_bytes[0:4])
     return result
-    ############方法二    速度慢淘汰
+    # 方法二    速度慢淘汰
     # result = int.from_bytes(number_bytes[0:4], byteorder='little')
     # return result
 
@@ -71,13 +71,16 @@ def byte4_to_float(number_bytes):
 
 
 # n字节转换为n/2个16位
-def bytes_to_uint16(number_bytes):
+def bytes_to_uint16(number_bytes, little_endian=True):
     bytes_num = len(number_bytes)
-    uint16_num = bytes_num//2
+    uint16_num = bytes_num // 2
     result = []
     for i in range(uint16_num):
-        result.append(byte2_to_uint16(number_bytes[i * 2:i * 2 + 2]))
+        result.append(
+            byte2_to_uint16(
+                number_bytes[i * 2:i * 2 + 2], little_endian=little_endian))
     return result
+
 
 # real data to modbus data
 def convert_to_uint16_data(result=None, data_type=None, data=None):
@@ -104,6 +107,7 @@ def convert_to_uint16_data(result=None, data_type=None, data=None):
                 result.append(i)
         else:
             pass
+
 
 # serial to real data
 def convert_to_real_data(result=None, data_type=None, data=None):
@@ -164,5 +168,5 @@ if __name__ == '__main__':
     #     byte2_to_uint16(b'a1')
     # endtime = datetime.datetime.now()
     # print((endtime - starttime).seconds)
-    #print(byte2_to_uint16(b'\x13\x87', little_endian=False))
-    #print(byte4_to_uint32(b'\xb0Z[\xeb'))
+    # print(byte2_to_uint16(b'\x13\x87', little_endian=False))
+    # print(byte4_to_uint32(b'\xb0Z[\xeb'))

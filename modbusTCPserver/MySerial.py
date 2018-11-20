@@ -1,14 +1,13 @@
-import sys
 import logging.handlers
+import sys
+
 import serial
 
 import Setting
-from tool.CyclicRedundancyCheck import crc16
-
+from utils.CyclicRedundancyCheck import crc16
 
 Bytes_Num = 29
 Bytes_End = b'\r\n'
-
 
 
 MY_SERIAL_LOG_FILENAME = '../log/bottom_log/' + 'my_serial.log'
@@ -20,15 +19,11 @@ logger.setLevel(logging.DEBUG)
 # console_log
 # 添加TimedRotatingFileHandler
 # 定义一个1H换一次log文件的handler
-# 保留20个旧log文件
+# 保留2个旧log文件
 file_handler = logging.handlers.TimedRotatingFileHandler(MY_SERIAL_LOG_FILENAME, when='H', interval=1, backupCount=2)
 file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
-file_handler.setLevel(logging.INFO)   # ===============
+file_handler.setLevel(logging.INFO)   
 logger.addHandler(file_handler)
-
-
-
-
 
 
 class MySerialException(Exception):
@@ -53,7 +48,7 @@ class MySerial:
             logger.info(data)
             if data == b'':  # 没接到(正常)
                 return None
-            elif data == b'$':  # 命令
+            elif data == b'$':  # 接收到命令
                 try:
                     command = b''
                     while True:
@@ -87,11 +82,11 @@ class MySerial:
                         except:
                             logger.info('未知命令error ' + str(command))
                             return None
-            elif ord(data) == 0xaa:  # 数据
+            elif ord(data) == 0xaa:  # 接收到数据
                 try:
                     data_result = data + self._ser.read(Bytes_Num-1)  # 29位
                     if crc16(data_result[:-2], bytes_num=Bytes_Num-2) == data_result[-2:]:
-                        #print('getdata')
+                        # print('getdata')
                         return ['data',data_result[1:-2]]
                     else:
                         logger.info('crc校验失败'+str(data_result))
@@ -108,12 +103,14 @@ class MySerial:
                     logger.info('未知数据error '+str(data))
                     return None
 
+    # 向zigbee写时间
     def write_time(self):
         time_bytes = Setting.get_time_bytes()
         self._ser.write(b'$settime$'+time_bytes)
         logger.info('$settime$ ' + str(time_bytes))
 
-    def writ_command_to_zigbee(self,data_bytes):
+    # 向zigbee写命令
+    def writ_command_to_zigbee(self, data_bytes):
         logger.info(str(data_bytes))
         self._ser.write(data_bytes)
         # data = self._ser.readline()
@@ -148,14 +145,14 @@ class MySerial:
         ser = serial.Serial()
         ser.baudrate = 115200
         ser.port = address
-        ser.timeout = 0.05 #0.05
+        ser.timeout = 0.05  # 0.05
         try:
             ser.open()
         except Exception as err:
             print("端口打开失败，程序终止")
             print(err)
             sys.exit()
-        else:
+        finally:
             print('端口打开成功')
             return ser
 
@@ -166,4 +163,3 @@ if __name__ == '__main__':
         data = my_serial.get_data_form_port()
         print(data)
         print(len(data))
-

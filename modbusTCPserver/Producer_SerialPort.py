@@ -27,18 +27,14 @@ class Producer_Serial(Thread):
         self.data = queue
         self.serial = serial
 
-
-    """
-    run方法 和start方法:
-    它们都是从Thread继承而来的，run()方法将在线程开启后执行，
-    可以把相关的逻辑写到run方法中（通常把run方法称为活动[Activity]）；
-    start()方法用于启动线程。
-    """
     def run(self):
-        print('串口接收线程开始执行', time.time())
-        logger.info('serial_port begin')
-        while True:
-            args = self.serial.get_data_form_port()  # serial 读命令
-            if args is not None:
-                self.data.put(args)  # 写入队列编号
-                logger.info('get command ' + str(args))
+        try:
+            print('串口接收线程开始执行', time.time())
+            logger.info('serial_port begin')
+            while True:
+                args = self.serial.get_data_form_port()  # serial 读命令
+                if args is not None:
+                    self.data.put(args)  # 写入队列编号
+                    logger.info('get command ' + str(args))
+        except Exception:
+            pass
