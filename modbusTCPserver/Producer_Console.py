@@ -30,6 +30,7 @@ class Producer_Console(Thread):
         self.data = queue
         self.exit = Event()
 
+    #  线程运行
     def run(self):
         try:
             print('控制台 线程开始执行', time.time())
@@ -44,7 +45,7 @@ class Producer_Console(Thread):
                     if input_data == 'quit':
                         self.stop()
                     else:
-                        args = self.input_data_solve(input_data)
+                        args = self._input_data_solve(input_data)
                         if args is not None:
                             self.data.put(args)  # 写入队列编号
                             logger.info('get command ' + str(args))
@@ -53,7 +54,13 @@ class Producer_Console(Thread):
         except Exception:
             pass
 
-    def input_data_solve(self, data):
+    #  线程退出
+    def stop(self):
+        self.exit.set()
+
+    #  控制台命令处理
+    @staticmethod
+    def _input_data_solve(data):
             data_list = list(filter(None, data.split('$')))
             if len(data_list) == 1 and data_list[0] == 'reqtime':
                 print('get command: reqtime')
@@ -69,7 +76,7 @@ class Producer_Console(Thread):
                     return None
                 else:
                     if 0 <= arg <= 2 ** 8 - 1:
-                        print('get command: reset ',arg)
+                        print('get command: reset ', arg)
                         return ['reset', arg]
                     else:
                         sys.stdout.write('you should input: $reset$ [Uint8](0~255)\n')
@@ -104,25 +111,18 @@ class Producer_Console(Thread):
                 print("unknown command")
                 return None
 
-    def stop(self):
-        self.exit.set()
-
 
 if __name__ == '__main__':
     queue = Queue()  # 队列实例化
-    producer2 = Producer_Console('console',queue)
+    producer2 = Producer_Console('console', queue)
     producer2.start()  # 开始制造
-    """
-    join（）的作用是，在子线程完成运行之前，这个子线程的父线程将一直被阻塞。
-　　join()方法的位置是在for循环外的，也就是说必须等待for循环里的两个进程都结束后，才去执行主进程。
-    """
+
     producer2.join()
 
     while True:
         try:
             arg = queue.get()
             print(arg)
-
         except:
             sys.exit()
         else:

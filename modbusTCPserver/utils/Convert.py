@@ -7,6 +7,37 @@ def _float_to_bin(number):
     return "{:032b}".format(number_bytes)
 
 
+# ==============================================================================================
+# 2字节转换为一个16位
+def byte2_to_uint16(number_bytes, little_endian=True):
+
+    if little_endian:
+        result, = struct.unpack('H', number_bytes[0:2])
+    else:
+        result, = struct.unpack('!H', number_bytes[0:2])
+    return result
+    # 方法二    速度慢淘汰
+    # result = int.from_bytes(number_bytes[0:2], byteorder='little')
+    # return result
+
+
+def byte4_to_uint32(number_bytes, little_endian=True):
+    if little_endian:
+        result, = struct.unpack('I', number_bytes[0:4])
+    else:
+        result, = struct.unpack('!I', number_bytes[0:4])
+    return result
+    # 方法二    速度慢淘汰
+    # result = int.from_bytes(number_bytes[0:4], byteorder='little')
+    # return result
+
+
+def byte4_to_float(number_bytes):
+    result, = struct.unpack('f', number_bytes[0:4])
+    return result
+
+
+# ======================================真实数据转化为modbus存储的数据，输出list=============
 # float转换为两个16位
 def float_to_uint16(number):
     number_bytes = struct.pack('f', number)
@@ -42,46 +73,18 @@ def char10_to_uint16(string_number):
     return result
 
 
-# 2字节转换为一个16位
-def byte2_to_uint16(number_bytes, little_endian=True):
-    if little_endian:
-        result, = struct.unpack('H', number_bytes[0:2])
-    else:
-        result, = struct.unpack('!H', number_bytes[0:2])
-    return result
-    # 方法二    速度慢淘汰
-    # result = int.from_bytes(number_bytes[0:2], byteorder='little')
-    # return result
-
-
-def byte4_to_uint32(number_bytes, little_endian=True):
-    if little_endian:
-        result, = struct.unpack('I', number_bytes[0:4])
-    else:
-        result, = struct.unpack('!I', number_bytes[0:4])
-    return result
-    # 方法二    速度慢淘汰
-    # result = int.from_bytes(number_bytes[0:4], byteorder='little')
-    # return result
-
-
-def byte4_to_float(number_bytes):
-    result, = struct.unpack('f', number_bytes[0:4])
-    return result
-
-
+# ======================================bytes数据转化为modbus存储的数据，输出list=============
 # n字节转换为n/2个16位
 def bytes_to_uint16(number_bytes, little_endian=True):
     bytes_num = len(number_bytes)
     uint16_num = bytes_num // 2
     result = []
     for i in range(uint16_num):
-        result.append(
-            byte2_to_uint16(
-                number_bytes[i * 2:i * 2 + 2], little_endian=little_endian))
+        result.append(byte2_to_uint16(number_bytes[i * 2:i * 2 + 2], little_endian=little_endian))
     return result
 
 
+# ======================================数据转化为modbus存储的数据(uint16)=======================
 # real data to modbus data
 def convert_to_uint16_data(result=None, data_type=None, data=None):
     if result is None or data_type is None or data is None:
@@ -129,7 +132,7 @@ def convert_to_real_data(result=None, data_type=None, data=None):
 
 
 if __name__ == '__main__':
-
+    pass
     # print(char10_to_uint16('aaaaa'))
     # float_to_uint16(1.1)
     # uint32_to_uint16(65535)
@@ -150,12 +153,11 @@ if __name__ == '__main__':
     # convert_to_uint16_data(result, 'bytes', b'\0\0\0a\0baba\0b\0')
     # print(result)
     #
-    result = []
+
     # print(result)
     # convert_to_real_data(result, 'uint16', b'qq')
     # print(result)
-    convert_to_real_data(result, 'uint32', b'n\xdf\xe6[')
-    print(result)
+
     # print(result)
     # convert_to_real_data(result, 'float', b'qqqqqqqq')
     # print(result)

@@ -1,7 +1,10 @@
 import time
 from copy import deepcopy
-from utils import Convert,SetPiTime
-import xlrd,xlwt
+
+import xlrd
+import xlwt
+
+import utils.Convert as Convert
 
 
 # ===============系统参数协议=========================
@@ -33,15 +36,15 @@ try:
         if i == 0:  # 跳过第一行
             continue
         Sensor_Module_InstallNum_Dict[int(i)] = table.row_values(i)[1]
-except:
+except Exception as err:
     workbook = xlwt.Workbook()
-    worksheet = workbook.add_sheet('sheet1',cell_overwrite_ok=True)
+    worksheet = workbook.add_sheet('sheet1', cell_overwrite_ok=True)
     worksheet.write(0, 0, label='Sensor_ModuleId_Id')
     worksheet.write(0, 1, label='Install_Num')
     for i in range(SENSOR_MODULE_NUM+1):
         if i == 0:  # 跳过第一行
             continue
-        worksheet.write(i, 0, label= int(i))
+        worksheet.write(i, 0, label=int(i))
         worksheet.write(i, 1, label=Sensor_Module_InstallNum_Dict[int(i)])
     workbook.save('../doc/setting.xls')
 
@@ -54,34 +57,57 @@ Sensor_Module = [
     'co2',
     'pm2.5',
     'pm10',
+    'short_address',
     'reserve']
 #     name  address+  type   初始值
 Sensor_Module_Config = {
-    'module_id':    [0, 'uint16',   1],
-    'install_num':  [1, 'char*10',  'YTHA-7'],
-    'time_stamp':   [6, 'uint32',   0],
-    'temperature':  [8, 'float',    0.0],
-    'humidity':     [10, 'float',   0.0],
-    'co2':          [12, 'float',   0.0],
-    'pm2.5':        [14, 'float',   0.0],
-    'pm10':         [16, 'float',   0.0],
-    'reserve':      [18, 'unknow',  0]
+    'module_id':     [0, 'uint16',   1],
+    'install_num':   [1, 'char*10',  'YTHA-7'],
+    'time_stamp':    [6, 'uint32',   0],
+    'temperature':   [8, 'float',    0.0],
+    'humidity':      [10, 'float',   0.0],
+    'co2':           [12, 'float',   0.0],
+    'pm2.5':         [14, 'float',   0.0],
+    'pm10':          [16, 'float',   0.0],
+    'short_address': [18, 'uint16',  123],
+    'reserve':       [19, 'unknow',  0]
 }
 
 # ==================树莓派系统参数设置协议================
 Pi_Time_stamp_Address = 5000 - 1
+Extern_Zigbee_Address_Address = 5002 - 1
 Hidden_Address = 6000 - 1
 
 
 # ====================================================ZigBee串口
-SERIAL_ADDRESS = '/dev/ttyS0' # '/dev/ttyS0'
+SERIAL_ADDRESS = '/dev/ttyS0'  # '/dev/ttyS0'
 
 
 def get_serial_address():
     return SERIAL_ADDRESS
 
 
-# ==================modbus初始化==============
+def get_module_address_from_id(module_id):
+    if module_id in Sensor_Module_Id_List:
+        address_begin = Sensor_Module_Address_Dict[module_id] + Sensor_Module_Config['time_stamp'][0]
+        return address_begin
+    else:
+        return None
+
+
+def get_values_from_bytes(bytes_data):
+    values = []
+    Convert.convert_to_uint16_data(values, 'bytes', bytes_data)
+    return values
+
+
+def get_time_bytes():
+    time_data = int(time.time())
+    result = time_data.to_bytes(4, byteorder='little')
+    return result
+
+
+#  ===================modbus初始化(从当前程序获得数据）==========================================
 def get_system_parameter_address_and_values():
     address_begin = Sys_Parameter_Address
     values = []
@@ -100,12 +126,12 @@ def get_sensor_address_and_values(module_id):
         values = []
         for i in Sensor_Module:
             Convert.convert_to_uint16_data(values, sensor_config[i][1], sensor_config[i][2])
-        return address_begin,values
+        return address_begin, values
     else:
         pass
 
 
-# ===================modbus更新时间================
+#  ===================modbus更新时间(从系统时间获得数据)=====================================================
 def get_timestamp_address_and_values():
     address_begin = Sys_Parameter_Address + System_Parameter_Config['time_stamp'][0]
     values = []
@@ -120,40 +146,14 @@ def get_Pi_timestamp_address_and_values():
     return address_begin, values
 
 
-def get_sensor_address(module_id):
-    if module_id in Sensor_Module_Id_List:
-        address_begin = Sensor_Module_Address_Dict[module_id] + Sensor_Module_Config['time_stamp'][0]
-        return address_begin
-    else:
-        return None
-
-
-#  解析zigbee接收到的数据
-def get_real_data(bytes_data):
-    data_module_id = bytes_data[:2]
-
-    data_others = bytes_data[2:]
-    values = []
-    # 添加module_num
-    Convert.convert_to_real_data(values, Sensor_Module_Config['module_id'][1], data_module_id)
-    # 添加数据
-    for sensor_module_part in Sensor_Module[2:]:
-        Convert.convert_to_real_data(values, Sensor_Module_Config[sensor_module_part][1], data_others[(Sensor_Module_Config[sensor_module_part][0] - 6) * 2:])
-    return values
-
-def get_values_from_bytes(bytes_data):
-    values = []
-    Convert.convert_to_uint16_data(values, 'bytes', bytes_data)
-    return values
-
-
+#  ====================解析zigbee数据(数据类型bytes,小端模式)==================================================
 def get_address_and_values_from_bytes(bytes_data):
     data_module_num = bytes_data[:2]
     data_others = bytes_data[2:]
 
     # 获得地址起始值
     sensor_module_num = Convert.byte2_to_uint16(data_module_num)
-    address_begin = get_sensor_address(sensor_module_num)
+    address_begin = get_module_address_from_id(sensor_module_num)
 
     values = []
     Convert.convert_to_uint16_data(values, 'bytes', data_others)
@@ -174,13 +174,22 @@ def get_module_id_and_timestamp_from_bytes(bytes_data):
     return sensor_module_id, time_stamp
 
 
-def get_time_bytes():
-    time_data = int(time.time())
-    result = time_data.to_bytes(4, byteorder='little')
-    return result
+'''
+def get_real_data(bytes_data):
+    data_module_id = bytes_data[:2]
+
+    data_others = bytes_data[2:]
+    values = []
+    # 添加module_num
+    Convert.convert_to_real_data(values, Sensor_Module_Config['module_id'][1], data_module_id)
+    # 添加数据
+    for sensor_module_part in Sensor_Module[2:]:
+        Convert.convert_to_real_data(values, Sensor_Module_Config[sensor_module_part][1], data_others[(Sensor_Module_Config[sensor_module_part][0] - 6) * 2:])
+    return values
+'''
 
 
-#  解析modbus request命令
+#  ===================解析modbus request命令(数据类型bytes,大端模式转化为uint16，小端模式)============================
 def solve_multiple_request(bytes_data):
     address = Convert.byte2_to_uint16(bytes_data[1:3], little_endian=False)
     values = Convert.bytes_to_uint16(bytes_data[6:], little_endian=False)

@@ -27,6 +27,7 @@ class Producer_Serial(Thread):
         self.data = queue
         self.serial = serial
 
+    #  线程运行
     def run(self):
         try:
             print('串口接收线程开始执行', time.time())

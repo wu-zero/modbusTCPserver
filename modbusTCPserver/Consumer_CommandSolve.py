@@ -29,6 +29,7 @@ class Consumer_CommandSolve(Thread):
         self.modbus = modbus
         self.monitor = monitor
 
+    #  线程运行
     def run(self):
         try:
             print('命令处理线程开始执行', time.time())
@@ -38,7 +39,7 @@ class Consumer_CommandSolve(Thread):
                     # 处理命令
                     if not self.data.empty():
                         args = self.data.get()
-                        self.solve_command(args, self.modbus, self.serial, self.monitor)
+                        self._solve_command(args, self.modbus, self.serial, self.monitor)
                         logger.info('solve command ' + str(args))
                 except Exception as err:
                     print(err)
@@ -48,22 +49,27 @@ class Consumer_CommandSolve(Thread):
         except Exception:
             pass
 
-    def solve_command(self, args, my_modbus, my_serial, monitor):
+    #  命令处理
+    @staticmethod
+    def _solve_command(args, modbus, serial, monitor):
         if args[0] == 'data':
-            if monitor.monitor_timestamp(args[1]):
-                my_modbus.updata_sensor_module(args[1])
+            if monitor.monitor_module_timestamp(args[1]):
+                modbus.updata_sensor_module(args[1])
         elif args[0] == 'reqtime':
-            my_serial.write_time()
+            serial.write_time()
         elif args[0] == 'devicelist' and len(args) == 2:
             print(args)
         elif args[0] == 'devicelist' and len(args) == 1:
-            my_serial.writ_command_to_zigbee(b'$devicelist$')
+            serial.writ_command_to_zigbee(b'$devicelist$')
         elif args[0] == 'reset':
             value = b'$reset$' + args[1].to_bytes(1, byteorder='little')
-            my_serial.writ_command_to_zigbee(value)
+            serial.writ_command_to_zigbee(value)
         elif args[0] == 'hbfreq':
             value = b'$hbfreq$' + args[1].to_bytes(1, byteorder='little')
-            my_serial.writ_command_to_zigbee(value)
+            serial.writ_command_to_zigbee(value)
+        elif args[0] == 'set extern address':
+            value = b'$extaddr$' + args[1].to_bytes(8, byteorder='little')
+            serial.writ_command_to_zigbee(value)
         elif args[0] == 'connect':
             pass
         elif args[0] == 'discnct':

@@ -6,7 +6,7 @@ import serial
 import Setting
 from utils.CyclicRedundancyCheck import crc16
 
-Bytes_Num = 29
+Bytes_Num = 31
 Bytes_End = b'\r\n'
 
 
@@ -26,37 +26,56 @@ file_handler.setLevel(logging.INFO)
 logger.addHandler(file_handler)
 
 
-class MySerialException(Exception):
-    def __init__(self, err=' 串口错误'):
-        Exception.__init__(self, err)
-
-
 class MySerial:
     def __init__(self):
         port_address = Setting.get_serial_address()
         self._ser = self._init_serial(port_address)
 
+    #  ====================串口底层========================
+    @staticmethod
+    def _init_serial(address):
+        ser = serial.Serial()
+        ser.baudrate = 115200
+        ser.port = address
+        ser.timeout = 0.05  # 0.05
+        try:
+            ser.open()
+        except Exception as err:
+            print("端口打开失败，程序终止")
+            print(err)
+
+            # 退出程序
+            import os
+            import signal
+            main_pid = os.getppid()
+            print(main_pid)
+            os.kill(os.getpid(), signal.SIGKILL)
+        else:
+            print('端口打开成功')
+            return ser
+
+    #  =====================应用===========================
+    #  从ZigBee读数据、处理，返回命令
     def get_data_form_port(self):
         data_result = b''
         try:
-            data = self._ser.read(1)
-
+            data_first = self._ser.read(1)
         except:
             pass  # 没收到(正常)
         else:
             # 命令
-            logger.info(data)
-            if data == b'':  # 没接到(正常)
+            if data_first == b'':  # 没接到(正常)
                 return None
-            elif data == b'$':  # 接收到命令
+            elif data_first == b'$':  # 接收到命令
+                logger.info(data_first)
                 try:
                     command = b''
                     while True:
-                        data = self._ser.read(1)
-                        if data == b'$':
+                        data_first = self._ser.read(1)
+                        if data_first == b'$':
                             break
                         else:
-                            command = command + data
+                            command = command + data_first
                 except Exception:  # 命令字节接收错误
                     logger.error('command error '+str(command))
                     return None
@@ -66,12 +85,12 @@ class MySerial:
                         return ['reqtime']
                     elif command == b'devicelist':
                         try:
-                            data = self._ser.read(1)
-                            num = ord(data)
+                            data_first = self._ser.read(1)
+                            num = ord(data_first)
                             result = []
                             for i in range(num):
                                 result.append(ord(self._ser.read(1)))
-                            return ['devicelist',result]
+                            return ['devicelist', result]
                         except Exception:
                             pass
                     else:  # 无效的命令类型
@@ -82,28 +101,36 @@ class MySerial:
                         except:
                             logger.info('未知命令error ' + str(command))
                             return None
-            elif ord(data) == 0xaa:  # 接收到数据
+            elif ord(data_first) == 0xaa:  # 接收到数据
+                logger.info(data_first)
                 try:
-                    data_result = data + self._ser.read(Bytes_Num-1)  # 29位
-                    if crc16(data_result[:-2], bytes_num=Bytes_Num-2) == data_result[-2:]:
-                        # print('getdata')
-                        return ['data',data_result[1:-2]]
+                    data_result = data_first + self._ser.read(Bytes_Num-1)  # 31位
+                    # 0xaa 1byte + 数据 26bytes + crc 2bytes + short_address 2bytes
+                    if len(data_result) == Bytes_Num:
+                        data_data = data_result[:-4]
+                        data_crc = data_result[-4:-2]
+                        data_short_address = data_result[-2:]
+                        if crc16(data_data, bytes_num=len(data_data)) == data_crc:
+                            # print('getdata')
+                            return ['data', data_data[1:]+data_short_address]
+                        else:
+                            logger.info('crc校验失败'+str(data_result))
+                            return None  # crc校验失败
                     else:
-                        logger.info('crc校验失败'+str(data_result))
-                        return None  # crc校验失败
+                        logger.info('数据长度错误'+str(data_result))
                 except Exception:
                     logger.error('data error ' + str(data_result))
                     return None  # 数据字节接收错误
             else:
                 try:
-                    data_result = data + self._ser.read_all()
+                    data_result = data_first + self._ser.read_all()
                     logger.info('未知数据error '+str(data_result))
                     return None
                 except:
-                    logger.info('未知数据error '+str(data))
+                    logger.info('未知数据error '+str(data_first))
                     return None
 
-    # 向zigbee写时间
+    # 向zigbee写系统时间
     def write_time(self):
         time_bytes = Setting.get_time_bytes()
         self._ser.write(b'$settime$'+time_bytes)
@@ -139,22 +166,6 @@ class MySerial:
         # data_result = self.get_right_data(data_result,bytes_num)
         #
         # return data_result
-
-    @staticmethod
-    def _init_serial(address):
-        ser = serial.Serial()
-        ser.baudrate = 115200
-        ser.port = address
-        ser.timeout = 0.05  # 0.05
-        try:
-            ser.open()
-        except Exception as err:
-            print("端口打开失败，程序终止")
-            print(err)
-            sys.exit()
-        finally:
-            print('端口打开成功')
-            return ser
 
 
 if __name__ == '__main__':

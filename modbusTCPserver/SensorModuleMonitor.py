@@ -33,7 +33,6 @@ logger2.addHandler(handler2)
 class SensorModuleMonitor:
 
     def __init__(self):
-
         self.timestamp_dict = {}
         self.timestamp_dict_old = {}
         time_now = int(time.time())
@@ -48,12 +47,12 @@ class SensorModuleMonitor:
         logger1.info('设备重启。。。。。')
         logger2.info('设备重启。。。。。')
 
-    def monitor_timestamp(self, data_bytes):
+    def monitor_module_timestamp(self, data_bytes):
         # return True
         module_id, time_stamp = Setting.get_module_id_and_timestamp_from_bytes(data_bytes)
         if module_id in Setting.Sensor_Module_Id_List:
             time_difference = time_stamp - self.timestamp_dict[module_id]
-            #if time_difference >= 0:
+            #  if time_difference >= 0:
             self.timestamp_dict_old = self.timestamp_dict
             self.timestamp_dict[module_id] = time_stamp
 
@@ -61,9 +60,9 @@ class SensorModuleMonitor:
                 logger2.info('模块'+str(module_id)+'不合理时间间隔：'+str(time_difference))
 
             return True
-            #turn False
+            #  turn False
 
-    def monitor(self):
+    def monitor_modules(self):
         time_now = int(time.time())
         off_line_bool_dict = {}
         for module_id in Setting.Sensor_Module_Id_List:

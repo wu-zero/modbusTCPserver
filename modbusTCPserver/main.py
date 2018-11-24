@@ -8,23 +8,31 @@ from Producer_Console import Producer_Console
 from Producer_SerialPort import Producer_Serial
 from SensorModuleMonitor import SensorModuleMonitor
 
+
 if __name__ == '__main__':
+    #  队列实例化
+    queue = Queue()
+    #  ZigBee串口
     my_serial = MySerial()
-    my_modbus_server = MyModbusServer()
+    #  modbusTCPserver
+    my_modbus_server = MyModbusServer(queue)
+    #  数据流监控
     my_monitor = SensorModuleMonitor()
 
-    def routine_fun():
+    #  定义系统定时执行函数
+    def sys_routine_fun():
+        #  定时更新系统时间戳
         my_modbus_server.updata_system_timestamp()
-        my_monitor.monitor()
-        t = Timer(0.5, routine_fun)
+        #  定时监控传感器模块
+        my_monitor.monitor_modules()
+        t = Timer(0.5, sys_routine_fun)
         t.start()
-
-    routine = Timer(0.5, routine_fun)
+    #  启动系统定时执行函数
+    routine = Timer(0.5, sys_routine_fun)
     routine.start()
 
-    queue = Queue()  # 队列实例化
-
-    producer_serial_port = Producer_Serial('serial_port', queue, my_serial)  # 调用对象，并传如参数线程名、实例化队列
+    #  串口(生产者)、命令行(生产者)、命令处理(消费者)
+    producer_serial_port = Producer_Serial('serial_port', queue, my_serial)
     producer_console = Producer_Console('console', queue)
     consumer = Consumer_CommandSolve('solve', queue, my_modbus_server, my_serial, my_monitor)
 
@@ -32,6 +40,7 @@ if __name__ == '__main__':
     producer_console.start()  # 开始制造
     consumer.start()  # 开始消费
 
+    #  只要有一个线程出错退出就退出主函数，程序重新自启
     while True:
         routine.join(0.1)
         producer_serial_port.join(0.1)
