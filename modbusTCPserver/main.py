@@ -1,6 +1,7 @@
 from queue import Queue
 from threading import Timer
 
+import pickle
 from Consumer_CommandSolve import Consumer_CommandSolve
 from MyModbusServer import MyModbusServer
 from MySerial import MySerial
@@ -8,6 +9,7 @@ from Producer_Console import Producer_Console
 from Producer_SerialPort import Producer_Serial
 from SensorModuleMonitor import SensorModuleMonitor
 
+save_file= '../data/save.data'
 
 if __name__ == '__main__':
     #  队列实例化
@@ -18,10 +20,20 @@ if __name__ == '__main__':
     my_modbus_server = MyModbusServer(queue)
     #  数据流监控
     my_monitor = SensorModuleMonitor()
-
+    time = 0
     #  定义系统定时执行函数
     def sys_routine_fun():
         #  定时更新系统时间戳
+        global time
+        time = time + 0.5
+        if time >= 15:
+            time = 0
+            block_data_now = my_modbus_server.get_all_data_from_modbus()
+            with open(save_file, 'wb') as f:
+                pickle.dump(block_data_now, f)
+
+
+
         my_modbus_server.updata_system_timestamp()
         #  定时监控传感器模块
         my_monitor.monitor_modules()

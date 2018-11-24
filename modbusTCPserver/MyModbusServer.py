@@ -1,3 +1,4 @@
+import pickle
 import modbus_tk.defines as cst
 from modbus_tk import hooks, modbus_tcp
 
@@ -10,6 +11,12 @@ SYS_ANALOG_INPUTS_BLOCK_NAME = 'b1'
 SYS_HOLDING_REGISTERS_BLOCK_NAME = 'b2'
 HIDDEN_HOLDING_REGISTERS_BLOCK_NAME = 'b3'
 
+SYS_ANALOG_INPUTS_BLOCK_ADDRESS = Setting.SYS_ANALOG_INPUTS_BLOCK_ADDRESS
+SYS_HOLDING_REGISTERS_BLOCK_ADDRESS = Setting.SYS_HOLDING_REGISTERS_BLOCK_ADDRESS
+
+
+
+save_file= '../data/save.data'
 
 class MyModbusServer:
 
@@ -29,8 +36,7 @@ class MyModbusServer:
             print(main_pid)
             os.kill(os.getpid(), signal.SIGKILL)
         else:
-            self._init_system_parameter()
-            self._init_sensor_modules()
+            self._init_system_parameter_and_sensor_modules()
             print("running......")
 
     # ====================modbus底层====================
@@ -38,9 +44,9 @@ class MyModbusServer:
     def _init_modbus(self, ):
         # 钩子
         hooks.install_hook('modbus.Slave.handle_write_multiple_registers_request',
-                           self.__handle_write_multiple_registers_request)
+                           self._handle_write_multiple_registers_request)
         hooks.install_hook('modbus.Slave.handle_write_single_register_request',
-                           self.__handle_write_single_registers_request)
+                           self._handle_write_single_registers_request)
 
         # 初始化
         server = modbus_tcp.TcpServer(address='0.0.0.0', port=PORT)
@@ -53,8 +59,8 @@ class MyModbusServer:
         # 建立块
         # slave.add_block('0', cst.DISCRETE_INPUTS, 0, 100)
         # slave.add_block('0', cst.COILS, 0, 100)
-        slave.add_block(SYS_ANALOG_INPUTS_BLOCK_NAME, cst.ANALOG_INPUTS, 3999, 171)
-        slave.add_block(SYS_HOLDING_REGISTERS_BLOCK_NAME, cst.HOLDING_REGISTERS, 4999, 6)
+        slave.add_block(SYS_ANALOG_INPUTS_BLOCK_NAME, cst.ANALOG_INPUTS, SYS_ANALOG_INPUTS_BLOCK_ADDRESS, 171)
+        slave.add_block(SYS_HOLDING_REGISTERS_BLOCK_NAME, cst.HOLDING_REGISTERS, SYS_HOLDING_REGISTERS_BLOCK_ADDRESS, 6)
         # slave.add_block(HIDDEN_HOLDING_REGISTERS_BLOCK_NAME, cst.HOLDING_REGISTERS, 5999, 20)
 
         return server, slave
@@ -62,6 +68,10 @@ class MyModbusServer:
     # 写modbus analog_inputs寄存器
     def _set_analog_inputs_values(self, address_begin, values):
         self.slave.set_values(SYS_ANALOG_INPUTS_BLOCK_NAME, address_begin, values)
+
+    # 写modbus analog_inputs寄存器
+    def _get_analog_inputs_values(self, address_begin, length):
+        return self.slave.get_values(SYS_ANALOG_INPUTS_BLOCK_NAME, address_begin, length)
 
     # 写系统设置数据
     def _set_holding_registers_values(self, address_begin, values):
@@ -90,6 +100,20 @@ class MyModbusServer:
             self._set_analog_inputs_values(address_begin, values)
         print("sensors_parameter初始化成功")
 
+    def _init_system_parameter_and_sensor_modules(self):
+        try:
+            f = open(save_file, 'rb')
+            data = pickle.load(f)
+            f.close()
+            self.set_all_data_to_modbus(data)
+            print('从文件初始化数据')
+        except Exception:
+            print('从定义初始化数据')
+            self._init_system_parameter()
+            self._init_sensor_modules()
+        finally:
+            print('modbus数据初始化成功')
+
     #  更新时间戳
     def updata_system_timestamp(self):
         address_begin, values = Setting.get_timestamp_address_and_values()
@@ -102,9 +126,34 @@ class MyModbusServer:
         address_begin, values = Setting.get_address_and_values_from_bytes(bytes_data)
         self._set_analog_inputs_values(address_begin, values)
 
+
+    #  读所有数据
+    def get_all_data_from_modbus(self):
+        input_block_data = self._get_analog_inputs_values(SYS_ANALOG_INPUTS_BLOCK_ADDRESS, 171)
+        hold_block_data = self._get_holding_registers_values(SYS_HOLDING_REGISTERS_BLOCK_ADDRESS, 6)
+        return {'input_block_data':input_block_data,'hold_block_data':hold_block_data}
+
+    def set_all_data_to_modbus(self,data_dict):
+       try:
+
+            data1 = data_dict['input_block_data']
+            data2 = data_dict['hold_block_data']
+            if len(data1) == 171 and len(data2) == 6:
+                self._set_analog_inputs_values(SYS_ANALOG_INPUTS_BLOCK_ADDRESS,data1)
+                self._set_holding_registers_values(SYS_HOLDING_REGISTERS_BLOCK_ADDRESS,data2)
+            else:
+                raise Exception
+       except:
+           raise Exception
+       else:
+           print("system_parameter初始化成功")
+           print("sensors_parameter初始化成功")
+           return True
+
+
     # =======================modbus底层 hook相关=================
     #  处理写single数据事件
-    def __handle_write_single_registers_request(self, request_data_from_hook):
+    def _handle_write_single_registers_request(self, request_data_from_hook):
         slave, bytes_data = request_data_from_hook
         #  获取地址和数据(uint16）
         address, values = Setting.solve_single_request(bytes_data)
@@ -124,7 +173,7 @@ class MyModbusServer:
             pass
 
     #  处理写multiple数据事件
-    def __handle_write_multiple_registers_request(self, request_data_from_hook):
+    def _handle_write_multiple_registers_request(self, request_data_from_hook):
         slave, bytes_data = request_data_from_hook
         # 获取地址和数据(uint16）
         address, values = Setting.solve_multiple_request(bytes_data)

@@ -7,6 +7,10 @@ import xlwt
 import utils.Convert as Convert
 
 
+SYS_ANALOG_INPUTS_BLOCK_ADDRESS = 4000 - 1
+SYS_HOLDING_REGISTERS_BLOCK_ADDRESS = 5000 - 1
+
+
 # ===============系统参数协议=========================
 Sys_Parameter_Address = 4000 - 1
 # sensors_id  sensors_name sensors_address
@@ -74,6 +78,7 @@ Sensor_Module_Config = {
 }
 
 # ==================树莓派系统参数设置协议================
+
 Pi_Time_stamp_Address = 5000 - 1
 Extern_Zigbee_Address_Address = 5002 - 1
 Hidden_Address = 6000 - 1
