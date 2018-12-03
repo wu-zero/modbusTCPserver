@@ -5,6 +5,7 @@ from prompt_toolkit import prompt
 import logging.handlers
 import time
 
+# ==================================log相关开始=========================
 PRODUCER_CONSOLE_LOG_FILENAME = '../log/console_log/' + 'console.log'
 
 # logger的初始化工作
@@ -19,7 +20,7 @@ data_file_handler = logging.handlers.TimedRotatingFileHandler(PRODUCER_CONSOLE_L
 data_file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
 data_file_handler.setLevel(logging.INFO)
 logger.addHandler(data_file_handler)
-
+# ==================================log相关结束=========================
 
 class Producer_Console(Thread):
     """

@@ -7,10 +7,9 @@ def _float_to_bin(number):
     return "{:032b}".format(number_bytes)
 
 
-# ==============================================================================================
-# 2字节转换为一个16位
+# ========================================字节转化为真实数据=================================
+# 2字节转换为一个uint16
 def byte2_to_uint16(number_bytes, little_endian=True):
-
     if little_endian:
         result, = struct.unpack('H', number_bytes[0:2])
     else:
@@ -21,6 +20,7 @@ def byte2_to_uint16(number_bytes, little_endian=True):
     # return result
 
 
+# 4字节转换为一个uint32
 def byte4_to_uint32(number_bytes, little_endian=True):
     if little_endian:
         result, = struct.unpack('I', number_bytes[0:4])
@@ -32,6 +32,7 @@ def byte4_to_uint32(number_bytes, little_endian=True):
     # return result
 
 
+# 4字节转换为一个float
 def byte4_to_float(number_bytes):
     result, = struct.unpack('f', number_bytes[0:4])
     return result
@@ -84,35 +85,38 @@ def bytes_to_uint16(number_bytes, little_endian=True):
     return result
 
 
-# ======================================数据转化为modbus存储的数据(uint16)=======================
-# real data to modbus data
-def convert_to_uint16_data(result=None, data_type=None, data=None):
-    if result is None or data_type is None or data is None:
-        print('error')
+# ======================================转化为modbus存储的数据(uint16)=======================
+# 真实数据、字节流转化为modbus存储的数据(uint16)
+def convert_to_uint16_data(data_type=None, data=None, result=None):
+    if result is None:
+        result = []
+
+    if data_type == 'uint16':
+        result.append(data)
+    elif data_type == 'uint32':
+        data_convert = uint32_to_uint16(data)
+        for i in data_convert:
+            result.append(i)
+    elif data_type == 'float':
+        data_convert = float_to_uint16(data)
+        for i in data_convert:
+            result.append(i)
+    elif data_type == 'char*10':
+        data_convert = char10_to_uint16(data)
+        for i in data_convert:
+            result.append(i)
+    elif data_type == 'bytes':
+        data_convert = bytes_to_uint16(data)
+        for i in data_convert:
+            result.append(i)
     else:
-        if data_type == 'uint16':
-            result.append(data)
-        elif data_type == 'uint32':
-            data_convert = uint32_to_uint16(data)
-            for i in data_convert:
-                result.append(i)
-        elif data_type == 'float':
-            data_convert = float_to_uint16(data)
-            for i in data_convert:
-                result.append(i)
-        elif data_type == 'char*10':
-            data_convert = char10_to_uint16(data)
-            for i in data_convert:
-                result.append(i)
-        elif data_type == 'bytes':
-            data_convert = bytes_to_uint16(data)
-            for i in data_convert:
-                result.append(i)
-        else:
-            pass
+        pass
+
+    return result
 
 
-# serial to real data
+# ======================================字节流转化为真实数据==================================
+# 字节流转化为真实数据
 def convert_to_real_data(result=None, data_type=None, data=None):
     if result is None or data_type is None or data is None:
         print('error')
@@ -163,7 +167,7 @@ if __name__ == '__main__':
     # print(result)
     # convert_to_real_data(result, 'char*10', 'a')
     # print(result)
-    # convert_to_real_data(result, 'bytes', b'\0\0\0a\0baba\0b\0')
+    #convert_to_real_data(result, 'bytes', b'\0\0\0a\0baba\0b\0')
     # print(result)
     # starttime = datetime.datetime.now()
     # for i in range(10000000):

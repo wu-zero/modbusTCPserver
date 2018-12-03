@@ -7,11 +7,10 @@ import xlwt
 import utils.Convert as Convert
 
 
-SYS_ANALOG_INPUTS_BLOCK_ADDRESS = 4000 - 1
-SYS_HOLDING_REGISTERS_BLOCK_ADDRESS = 5000 - 1
+SYS_ANALOG_INPUTS_BLOCK_ADDRESS = 4000 -1
+SYS_HOLDING_REGISTERS_BLOCK_ADDRESS = 5000 -1
 
-
-# ===============系统参数协议=========================
+# ===========================系统参数协议=========================
 Sys_Parameter_Address = 4000 - 1
 # sensors_id  sensors_name sensors_address
 System_Parameter = [
@@ -26,8 +25,13 @@ System_Parameter_Config = {
     'time_stamp':  [3, 'uint32', int(time.time())],
     'reserve':     [5, 'unknow', 0]
 }
+# ============================树莓派系统参数设置协议================
+Pi_Time_stamp_Address = 5000 - 1
+Extern_Zigbee_Address_Address = 5002 - 1
+# Hidden_Address = 6000 - 1
 
-# ================传感器模块协议=======================
+
+# ============================传感器模块协议=======================
 SENSOR_MODULE_NUM = 5
 Sensor_Module_Id_List = [1, 2, 3, 4, 5]
 Sensor_Module_Address_Dict = {1: 4021 - 1, 2: 4051 - 1, 3: 4081 - 1, 4: 4111 - 1, 5: 4141 - 1}
@@ -77,21 +81,16 @@ Sensor_Module_Config = {
     'reserve':       [19, 'unknow',  0]
 }
 
-# ==================树莓派系统参数设置协议================
 
-Pi_Time_stamp_Address = 5000 - 1
-Extern_Zigbee_Address_Address = 5002 - 1
-Hidden_Address = 6000 - 1
-
-
-# ====================================================ZigBee串口
+# ============================ZigBee串口==========================
 SERIAL_ADDRESS = '/dev/ttyS0'  # '/dev/ttyS0'
 
-
+# 获取串口地址
 def get_serial_address():
     return SERIAL_ADDRESS
 
 
+# 获取传感器模块地址
 def get_module_address_from_id(module_id):
     if module_id in Sensor_Module_Id_List:
         address_begin = Sensor_Module_Address_Dict[module_id] + Sensor_Module_Config['time_stamp'][0]
@@ -100,10 +99,10 @@ def get_module_address_from_id(module_id):
         return None
 
 
-def get_values_from_bytes(bytes_data):
-    values = []
-    Convert.convert_to_uint16_data(values, 'bytes', bytes_data)
-    return values
+# def get_values_from_bytes(bytes_data):
+#     values = []
+#     Convert.convert_to_uint16_data(values, 'bytes', bytes_data)
+#     return values
 
 
 def get_time_bytes():
@@ -117,7 +116,7 @@ def get_system_parameter_address_and_values():
     address_begin = Sys_Parameter_Address
     values = []
     for i in System_Parameter:
-        Convert.convert_to_uint16_data(values, System_Parameter_Config[i][1], System_Parameter_Config[i][2])
+        values = Convert.convert_to_uint16_data(System_Parameter_Config[i][1], System_Parameter_Config[i][2], values)
     return address_begin, values
 
 
@@ -130,7 +129,7 @@ def get_sensor_address_and_values(module_id):
         sensor_config['install_num'][2] = Sensor_Module_InstallNum_Dict[module_id]
         values = []
         for i in Sensor_Module:
-            Convert.convert_to_uint16_data(values, sensor_config[i][1], sensor_config[i][2])
+            values = Convert.convert_to_uint16_data(sensor_config[i][1], sensor_config[i][2], values)
         return address_begin, values
     else:
         pass
@@ -139,19 +138,18 @@ def get_sensor_address_and_values(module_id):
 #  ===================modbus更新时间(从系统时间获得数据)=====================================================
 def get_timestamp_address_and_values():
     address_begin = Sys_Parameter_Address + System_Parameter_Config['time_stamp'][0]
-    values = []
-    Convert.convert_to_uint16_data(values, System_Parameter_Config['time_stamp'][1], int(time.time()))
+    values = Convert.convert_to_uint16_data(System_Parameter_Config['time_stamp'][1], int(time.time()))
     return address_begin, values
 
 
 def get_Pi_timestamp_address_and_values():
     address_begin = Pi_Time_stamp_Address
-    values = []
-    Convert.convert_to_uint16_data(values, 'uint32', int(time.time()))
+    values = Convert.convert_to_uint16_data('uint32', int(time.time()))
     return address_begin, values
 
 
 #  ====================解析zigbee数据(数据类型bytes,小端模式)==================================================
+#  zigbee数据->modbus数据
 def get_address_and_values_from_bytes(bytes_data):
     data_module_num = bytes_data[:2]
     data_others = bytes_data[2:]
@@ -160,11 +158,11 @@ def get_address_and_values_from_bytes(bytes_data):
     sensor_module_num = Convert.byte2_to_uint16(data_module_num)
     address_begin = get_module_address_from_id(sensor_module_num)
 
-    values = []
-    Convert.convert_to_uint16_data(values, 'bytes', data_others)
+    values = Convert.convert_to_uint16_data('bytes', data_others)
     return address_begin, values
 
 
+#  zigbee数据->真实数据
 def get_module_id_and_timestamp_from_bytes(bytes_data):
     data_module_num = bytes_data[:2]
     data_others = bytes_data[2:]

@@ -2,6 +2,7 @@ from threading import Thread
 import logging.handlers
 import time
 
+# ==================================log相关开始=========================
 PRODUCER_SERIALPORT_LOG_FILENAME = '../log/serial_port_log/' + 'serial_port.log'
 
 # logger的初始化工作
@@ -16,7 +17,7 @@ handler = logging.handlers.TimedRotatingFileHandler(PRODUCER_SERIALPORT_LOG_FILE
 handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
 handler.setLevel(logging.INFO)
 logger.addHandler(handler)
-
+# ==================================log相关结束=========================
 
 class Producer_Serial(Thread):
     """

@@ -1,4 +1,14 @@
 def crc16(bytes_data, bytes_num):
+    """crc校验
+    
+    Arguments:
+        bytes_data {bytes} -- bytes数据
+        bytes_num {int} -- 数据位数
+    
+    Returns:
+        bool -- 校验结果
+    """
+
     crc = 0xffff
     i = 0
     for i in range(bytes_num):

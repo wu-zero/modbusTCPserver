@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 三个程序中用到的小工具：
-Convert                     数据类型转化
+Convert                     数据类型互相转化(串口数据(byte)、modbus数据(uint16)、真实数据)
 CyclicRedundancyCheck       CRC校验
-SetPiTime                   设置Ubuntu时间
+SetPiTime                   设置树莓派(Ubuntu)时间
 
 contributors:
 ----------------------------------

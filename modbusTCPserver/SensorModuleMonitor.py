@@ -3,6 +3,7 @@ import time
 
 import Setting
 
+# ================================log相关开始=========================
 MONITOR1_LOG_FILENAME = '../log/monitor_log/' + 'online_monitor.log'
 MONITOR2_LOG_FILENAME = '../log/monitor_log/' + 'loss_data_monitor.log'
 
@@ -28,6 +29,7 @@ handler2 = logging.handlers.TimedRotatingFileHandler(MONITOR2_LOG_FILENAME, when
 handler2.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s[:%(lineno)d] - %(message)s"))
 handler2.setLevel(logging.INFO)
 logger2.addHandler(handler2)
+# ==================================log相关结束=========================
 
 
 class SensorModuleMonitor:

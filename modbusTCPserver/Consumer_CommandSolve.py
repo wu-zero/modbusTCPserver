@@ -24,7 +24,7 @@ class Consumer_CommandSolve(Thread):
     """
     def __init__(self, t_name, queue, modbus, serial, monitor):
         Thread.__init__(self, name=t_name)
-        self.data = queue
+        self.queue = queue
         self.serial = serial
         self.modbus = modbus
         self.monitor = monitor
@@ -37,8 +37,8 @@ class Consumer_CommandSolve(Thread):
             while True:
                 try:
                     # 处理命令
-                    if not self.data.empty():
-                        args = self.data.get()
+                    if not self.queue.empty():
+                        args = self.queue.get()
                         self._solve_command(args, self.modbus, self.serial, self.monitor)
                         logger.info('solve command ' + str(args))
                 except Exception as err:
@@ -54,9 +54,9 @@ class Consumer_CommandSolve(Thread):
     def _solve_command(args, modbus, serial, monitor):
         if args[0] == 'data':
             if monitor.monitor_module_timestamp(args[1]):
-                modbus.updata_sensor_module(args[1])
+                modbus.update_sensor_module(args[1])
         elif args[0] == 'reqtime':
-            serial.write_time()
+            serial.write_time_to_zigbee()
         elif args[0] == 'devicelist' and len(args) == 2:
             print(args)
         elif args[0] == 'devicelist' and len(args) == 1:
